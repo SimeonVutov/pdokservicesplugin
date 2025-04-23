@@ -3,6 +3,8 @@
 
 <img src="https://img.shields.io/liberapay/receives/rduivenvoorde.svg?logo=liberapay">
 
+Buy me a beer / Doneer een biertje via https://liberapay.com/rduivenvoorde
+
 ## English
 
 This plugin is probably only interesting for the dutch audience.
