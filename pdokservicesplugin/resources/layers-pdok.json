@@ -143,14 +143,14 @@
                 "url": "https://api.pdok.nl/brt/top10nl/ogc/v1/styles/brt_top10nl__netherlandsrdnewquad?f=mapbox"
             },
             {
-                "id": "brt_top10nl__webmercatorquad",
-                "name": "BRT TOP10NL Standaardvisualisatie (WebMercatorQuad)",
-                "url": "https://api.pdok.nl/brt/top10nl/ogc/v1/styles/brt_top10nl__webmercatorquad?f=mapbox"
-            },
-            {
                 "id": "brt_top10nl__europeanetrs89_laeaquad",
                 "name": "BRT TOP10NL Standaardvisualisatie (EuropeanETRS89_LAEAQuad)",
                 "url": "https://api.pdok.nl/brt/top10nl/ogc/v1/styles/brt_top10nl__europeanetrs89_laeaquad?f=mapbox"
+            },
+            {
+                "id": "brt_top10nl__webmercatorquad",
+                "name": "BRT TOP10NL Standaardvisualisatie (WebMercatorQuad)",
+                "url": "https://api.pdok.nl/brt/top10nl/ogc/v1/styles/brt_top10nl__webmercatorquad?f=mapbox"
             }
         ],
         "tiles": [
@@ -970,9 +970,9 @@
         "service_md_id": "afe2131c-8ffc-4975-a171-654745a320a4"
     },
     {
-        "name": "2024_quickorthoHR",
-        "title": "Luchtfoto 2024 Quick Ortho 8cm RGB",
-        "abstract": "Landsdekkende dataset in 8cm resolutie kleuren luchtfoto's van 2024.",
+        "name": "2025_quickorthoHR",
+        "title": "Luchtfoto 2025 Quick Ortho 8cm RGB",
+        "abstract": "Landsdekkende dataset in 8cm resolutie kleuren luchtfoto's van 2025.",
         "dataset_md_id": "4e2bb25e-a5a9-43a7-986a-40e7aea32e38",
         "styles": [
             {
@@ -1393,6 +1393,27 @@
         "service_md_id": "451e5045-56bc-4717-92a9-b2eb1f268ccb"
     },
     {
+        "name": "AM.SensitiveArea",
+        "title": "AgglomerationSource",
+        "abstract": "Het gaat om gegevens over de geluidbron \u2018agglomeraties\u2019, stedelijke gebieden van aangewezen gemeenten.",
+        "dataset_md_id": "52967bce-30cd-4d64-b8da-9f27da828113",
+        "styles": [
+            {
+                "title": "AM.SensitiveArea.Default",
+                "name": "AM.SensitiveArea.Default"
+            }
+        ],
+        "crs": "EPSG:28992,EPSG:25831,EPSG:25832,EPSG:3034,EPSG:3035,EPSG:3857,EPSG:4258,EPSG:4326,CRS:84",
+        "minscale": "",
+        "maxscale": "",
+        "imgformats": "image/png,image/jpeg,image/png; mode=8bit,image/vnd.jpeg-png,image/vnd.jpeg-png8",
+        "service_url": "https://service.pdok.nl/ienw/gebiedsbeheer/agglomeraties-richtlijn-omgevingslawaai/wms/v1_0?request=GetCapabilities&service=WMS",
+        "service_title": "Agglomeraties - Richtlijn Omgevingslawaai (INSPIRE geharmoniseerd) WMS",
+        "service_abstract": "Het gaat om gegevens over de geluidbron \u2018agglomeraties\u2019, stedelijke gebieden van aangewezen gemeenten.",
+        "service_type": "wms",
+        "service_md_id": "ce0138cc-975c-4b32-ba47-74c7437606d5"
+    },
+    {
         "name": "bagterugmeldingen",
         "title": "BAG Terugmeldingen",
         "abstract": "Alle recente BAG terugmeldingen gedaan door BAG gebruikers.",
@@ -1596,6 +1617,27 @@
         "service_abstract": "Deze dataset bevat de naar INSPIRE thema Geologie geharmoniseerde gegevens over een bodemkundig booronderzoek, die voortkomen uit een bodemkundig georienteerde boring. In veel gevallen bestaat het bodemkundig booronderzoek uit niet meer dan een boormonsterprofiel. In het meest uitgebreide geval omvat het booronderzoek ook de resultaten van boormonsteronderzoek en boorgatmeetgegevens. Het boormonsterprofiel komt tot stand door de samenstelling van de monsters uit een booronderzoek macroscopisch te beschrijven.",
         "service_type": "wms",
         "service_md_id": "ff0f3779-25cc-4150-ae3c-ec885388c59e"
+    },
+    {
+        "name": "bhrg",
+        "title": "BRO - Geologisch booronderzoek (BHR-G)",
+        "abstract": "Geologisch booronderzoek omvat de gegevens die voortkomen uit een geologisch georienteerde boring. In veel gevallen bestaat het geologisch booronderzoek uit niet meer dan een boormonsterprofiel. In het meest uitgebreide geval omvat het booronderzoek ook de resultaten van boormonsteronderzoek. Het boormonsterprofiel komt tot stand door de samenstelling van de monsters uit een booronderzoek macroscopisch te beschrijven.",
+        "dataset_md_id": "2bae2c5e-02a3-4979-ac74-5f3f37b16bc1",
+        "styles": [
+            {
+                "title": "BRO - Geologisch booronderzoek (BHR-G)",
+                "name": "default"
+            }
+        ],
+        "crs": "EPSG:28992,EPSG:25831,EPSG:25832,EPSG:3034,EPSG:3035,EPSG:3857,EPSG:4258,EPSG:4326,CRS:84",
+        "minscale": "",
+        "maxscale": "",
+        "imgformats": "image/png,image/jpeg,image/png; mode=8bit,image/vnd.jpeg-png,image/vnd.jpeg-png8",
+        "service_url": "https://service.pdok.nl/bzk/bro-geologisch-booronderzoek/wms/v1_0?request=GetCapabilities&service=WMS",
+        "service_title": "BRO - Geologisch booronderzoek (BHR-G) WMS",
+        "service_abstract": "Deze dataset bevat de gegevens over geologische booronderzoeken welke in de BRO (Basisregistratie Ondergrond) zijn opgenomen. Het betreft booronderzoeken tot een diepte van 500 meter met een enkele uitzondering welke dieper is. De dataset wordt in zijn geheel uitgeleverd en is niet geharmoniseerd naar een INSPIRE thema. In veel gevallen bestaat het geologisch booronderzoek uit niet meer dan een boormonsterprofiel. Dit betreft een beschrijving van de opeenvolgende lagen aan de hand van zintuigelijke waarnemingen van de boormonsters. In sommige gevallen omvat het booronderzoek ook de resultaten van boormonsteranalyses welke kunnen bestaan uit bepalingen van verschllende aspecten. Voor meer informatie raadpleeg www.basisregistratieondergrond.nl",
+        "service_type": "wms",
+        "service_md_id": "734bdcf3-e825-48da-9872-46cb132ef763"
     },
     {
         "name": "GE.Borehole",
@@ -64253,23 +64295,23 @@
             },
             {
                 "title": "Gemeentewijkbuurt percentage personen met laag inkomen",
-                "name": "wijkenbuurten_thema_buurten_gemeentewijkbuurt_percentage_personen_met_laag_inkomen"
+                "name": "buurt_percentage_personen_met_laag_inkomen"
             },
             {
                 "title": "Gemeentewijkbuurt percentage personen met hoog inkomen",
-                "name": "wijkenbuurten_thema_buurten_gemeentewijkbuurt_percentage_personen_met_hoog_inkomen"
+                "name": "buurt_percentage_personen_met_hoog_inkomen"
             },
             {
                 "title": "Gemeentewijkbuurt perc huish met laag inkomen",
-                "name": "wijkenbuurten_thema_buurten_gemeentewijkbuurt_perc_huish_met_laag_inkomen"
+                "name": "buurt_perc_huish_met_laag_inkomen"
             },
             {
                 "title": "Gemeentewijkbuurt perc huish met hoog inkomen",
-                "name": "wijkenbuurten_thema_buurten_gemeentewijkbuurt_perc_huish_met_hoog_inkomen"
+                "name": "buurt_perc_huish_met_hoog_inkomen"
             },
             {
                 "title": "Gemeentewijkbuurt percentage huish onder rond sociaal min",
-                "name": "wijkenbuurten_thema_buurten_gemeentewijkbuurt_percentage_huish_onder_rond_sociaal_min"
+                "name": "buurt_percentage_huish_onder_rond_sociaal_min"
             },
             {
                 "title": "Gemeentewijkbuurt huishoudens met lage koopkracht",
@@ -64377,7 +64419,7 @@
             },
             {
                 "title": "Gemeentewijkbuurt gemiddelde afstand tot ziekenhuis excl buitenpoli",
-                "name": "gemeentewijkbuurt_gemiddelde_afstand_tot_ziekenhuis_excl_buitenpoli"
+                "name": "wijkenbuurten_thema_buurten_gemeentewijkbuurt_gemiddelde_afstand_tot_ziekenhuis_excl_buitenpoli"
             },
             {
                 "title": "Gemeentewijkbuurt gemiddeld aantal ziekenhuizen excl poli binnen 5 km",
@@ -65050,23 +65092,23 @@
             },
             {
                 "title": "Gemeentewijkbuurt percentage personen met laag inkomen",
-                "name": "wijkenbuurten_thema_wijken_gemeentewijkbuurt_percentage_personen_met_laag_inkomen"
+                "name": "wijk_percentage_personen_met_laag_inkomen"
             },
             {
                 "title": "Gemeentewijkbuurt percentage personen met hoog inkomen",
-                "name": "wijkenbuurten_thema_wijken_gemeentewijkbuurt_percentage_personen_met_hoog_inkomen"
+                "name": "wijk_percentage_personen_met_hoog_inkomen"
             },
             {
                 "title": "Gemeentewijkbuurt perc huish met laag inkomen",
-                "name": "wijkenbuurten_thema_wijken_gemeentewijkbuurt_perc_huish_met_laag_inkomen"
+                "name": "wijk_perc_huish_met_laag_inkomen"
             },
             {
                 "title": "Gemeentewijkbuurt perc huish met hoog inkomen",
-                "name": "wijkenbuurten_thema_wijken_gemeentewijkbuurt_perc_huish_met_hoog_inkomen"
+                "name": "wijk_perc_huish_met_hoog_inkomen"
             },
             {
                 "title": "Gemeentewijkbuurt percentage huish onder rond sociaal min",
-                "name": "wijkenbuurten_thema_wijken_gemeentewijkbuurt_percentage_huish_onder_rond_sociaal_min"
+                "name": "wijk_percentage_huish_onder_rond_sociaal_min"
             },
             {
                 "title": "Gemeentewijkbuurt huishoudens met lage koopkracht",
@@ -65843,23 +65885,23 @@
             },
             {
                 "title": "Gemeentewijkbuurt percentage personen met laag inkomen",
-                "name": "wijkenbuurten_thema_gemeenten_gemeentewijkbuurt_percentage_personen_met_laag_inkomen"
+                "name": "gemeente_percentage_personen_met_laag_inkomen"
             },
             {
                 "title": "Gemeentewijkbuurt percentage personen met hoog inkomen",
-                "name": "wijkenbuurten_thema_gemeenten_gemeentewijkbuurt_percentage_personen_met_hoog_inkomen"
+                "name": "gemeente_percentage_personen_met_hoog_inkomen"
             },
             {
                 "title": "Gemeentewijkbuurt perc huish met laag inkomen",
-                "name": "wijkenbuurten_thema_gemeenten_gemeentewijkbuurt_perc_huish_met_laag_inkomen"
+                "name": "gemeente_perc_huish_met_laag_inkomen"
             },
             {
                 "title": "Gemeentewijkbuurt perc huish met hoog inkomen",
-                "name": "wijkenbuurten_thema_gemeenten_gemeentewijkbuurt_perc_huish_met_hoog_inkomen"
+                "name": "gemeente_perc_huish_met_hoog_inkomen"
             },
             {
                 "title": "Gemeentewijkbuurt percentage huish onder rond sociaal min",
-                "name": "wijkenbuurten_thema_gemeenten_gemeentewijkbuurt_percentage_huish_onder_rond_sociaal_min"
+                "name": "gemeente_percentage_huish_onder_rond_sociaal_min"
             },
             {
                 "title": "Gemeentewijkbuurt huishoudens met lage koopkracht",
@@ -66736,7 +66778,7 @@
             },
             {
                 "title": "Gemeentewijkbuurt gemiddelde afstand tot ziekenhuis excl buitenpoli",
-                "name": "gemeentewijkbuurt_gemiddelde_afstand_tot_ziekenhuis_excl_buitenpoli"
+                "name": "wijkenbuurten_thema_buurten_gemeentewijkbuurt_gemiddelde_afstand_tot_ziekenhuis_excl_buitenpoli"
             },
             {
                 "title": "Gemeentewijkbuurt gemiddeld aantal ziekenhuizen excl poli binnen 5 km",
@@ -69291,7 +69333,7 @@
             },
             {
                 "title": "Gemeentewijkbuurt gemiddelde afstand tot ziekenhuis excl buitenpoli",
-                "name": "gemeentewijkbuurt_gemiddelde_afstand_tot_ziekenhuis_excl_buitenpoli"
+                "name": "wijkenbuurten_thema_buurten_gemeentewijkbuurt_gemiddelde_afstand_tot_ziekenhuis_excl_buitenpoli"
             },
             {
                 "title": "Gemeentewijkbuurt gemiddeld aantal ziekenhuizen excl poli binnen 5 km",
@@ -73241,6 +73283,69 @@
         "service_md_id": "1ce74355-763a-481d-b9d7-aaafbf0d7d53"
     },
     {
+        "name": "TN.AirTransportNetwork.AerodromeNode",
+        "title": "MajorAirportSource",
+        "abstract": "Het gaat om gegevens over de geluidbron 'Hoofd Luchtvervoersnetwerk'.",
+        "dataset_md_id": "9f876090-9ee4-4a72-8d04-cc8d5a253876",
+        "styles": [
+            {
+                "title": "Default",
+                "name": "default"
+            }
+        ],
+        "crs": "EPSG:28992,EPSG:25831,EPSG:25832,EPSG:3034,EPSG:3035,EPSG:3857,EPSG:4258,EPSG:4326,CRS:84",
+        "minscale": "",
+        "maxscale": "",
+        "imgformats": "image/png,image/jpeg,image/png; mode=8bit,image/vnd.jpeg-png,image/vnd.jpeg-png8",
+        "service_url": "https://service.pdok.nl/ienw/vervoersnetwerken/hoofd-luchtvervoersnetwerk-richtlijn-omgevingslawaai/wms/v1_0?request=GetCapabilities&service=WMS",
+        "service_title": "Hoofd Luchtvervoersnetwerk - richtlijn omgevingslawaai (INSPIRE geharmoniseerd) WMS",
+        "service_abstract": "Het gaat om gegevens over de geluidbron 'Hoofd Luchtvervoersnetwerk'.",
+        "service_type": "wms",
+        "service_md_id": "756919e3-e8c0-4846-b1ba-2f49d334efcc"
+    },
+    {
+        "name": "TN.RailTransportNetwork.RailwayLink",
+        "title": "MajorRailwaySource",
+        "abstract": "Het gaat om gegevens over de geluidbron 'Hoofd spoorwegen'.",
+        "dataset_md_id": "a2338eab-179c-4899-acde-e5fbaa2bbeac",
+        "styles": [
+            {
+                "title": "Railway Link Default Style",
+                "name": "TN.RailTransportNetwork.RailwayLink.Default"
+            }
+        ],
+        "crs": "EPSG:28992,EPSG:25831,EPSG:25832,EPSG:3034,EPSG:3035,EPSG:3857,EPSG:4258,EPSG:4326,CRS:84",
+        "minscale": "",
+        "maxscale": "",
+        "imgformats": "image/png,image/jpeg,image/png; mode=8bit,image/vnd.jpeg-png,image/vnd.jpeg-png8",
+        "service_url": "https://service.pdok.nl/ienw/vervoersnetwerken/hoofd-spoorwegen-richtlijn-omgevingslawaai/wms/v1_0?request=GetCapabilities&service=WMS",
+        "service_title": "Hoofd spoorwegen - Richtlijn Omgevingslawaai (INSPIRE geharmoniseerd) WMS",
+        "service_abstract": "Het gaat om gegevens over de geluidbron 'Hoofd spoorwegen'.",
+        "service_type": "wms",
+        "service_md_id": "c95a48dd-c868-4396-b99e-08231b293044"
+    },
+    {
+        "name": "TN.RoadTransportNetwork.RoadLink",
+        "title": "MajorRoadSource",
+        "abstract": "Het gaat om gegevens over de geluidbron 'Hoofdwegen'.",
+        "dataset_md_id": "4f1247e9-e5c0-43fb-8449-271fd02a5219",
+        "styles": [
+            {
+                "title": "RoadLink Default Style",
+                "name": "TN.RoadTransportNetwork.RoadLink.Default"
+            }
+        ],
+        "crs": "EPSG:28992,EPSG:25831,EPSG:25832,EPSG:3034,EPSG:3035,EPSG:3857,EPSG:4258,EPSG:4326,CRS:84",
+        "minscale": "",
+        "maxscale": "",
+        "imgformats": "image/png,image/jpeg,image/png; mode=8bit,image/vnd.jpeg-png,image/vnd.jpeg-png8",
+        "service_url": "https://service.pdok.nl/ienw/vervoersnetwerken/hoofdwegen-richtlijn-omgevingslawaai/wms/v1_0?request=GetCapabilities&service=WMS",
+        "service_title": "Hoofdwegen - Richtlijn omgevingslawaai (INSPIRE geharmoniseerd) WMS",
+        "service_abstract": "Het gaat om gegevens over de geluidbron 'Hoofdwegen'.",
+        "service_type": "wms",
+        "service_md_id": "17c49c13-6982-4a95-8252-66fe2608a11d"
+    },
+    {
         "name": "EL.GridCoverage",
         "title": "Grid Coverage",
         "abstract": "Het DTM is gemaakt op basis van het Actueel Hoogtebestand Nederland (AHN).",
@@ -74533,10 +74638,10 @@
         "service_md_id": "a301ddc7-c26f-42d8-b367-509ae5ae47d0"
     },
     {
-        "name": "2024_quickorthoHR",
-        "title": "Luchtfoto 2024 Quick Ortho 8cm RGB",
-        "abstract": "Landsdekkende dataset in 8cm resolutie kleuren luchtfoto's van 2024.",
-        "dataset_md_id": "8b4d70cd-4233-4299-8ce6-01943d1bbd1f",
+        "name": "2025_quickorthoHR",
+        "title": "Luchtfoto 2025 Quick Ortho 8cm RGB",
+        "abstract": "Landsdekkende dataset in 8cm resolutie kleuren luchtfoto's van 2025.",
+        "dataset_md_id": "bc9b2d88-9d6b-46c9-ad0e-23f0b7da657c",
         "styles": [],
         "crs": "EPSG:28992,EPSG:3857,EPSG:4258,EPSG:4326,EPSG:25831,EPSG:25832",
         "minscale": "",
@@ -74841,7 +74946,7 @@
         ],
         "crs": "EPSG:28992,EPSG:25831,EPSG:25832,EPSG:3034,EPSG:3035,EPSG:3857,EPSG:4258,EPSG:4326,CRS:84",
         "minscale": "",
-        "maxscale": "50000",
+        "maxscale": "50001",
         "imgformats": "image/png,image/jpeg,image/png; mode=8bit,image/vnd.jpeg-png,image/vnd.jpeg-png8",
         "service_url": "https://service.pdok.nl/rws/nwbvaarwegen/wms/v1_0?request=GetCapabilities&service=WMS",
         "service_title": "NWB - Vaarwegen WMS",
@@ -74883,7 +74988,7 @@
         ],
         "crs": "EPSG:28992,EPSG:25831,EPSG:25832,EPSG:3034,EPSG:3035,EPSG:3857,EPSG:4258,EPSG:4326,CRS:84",
         "minscale": "1",
-        "maxscale": "50000",
+        "maxscale": "50001",
         "imgformats": "image/png,image/jpeg,image/png; mode=8bit,image/vnd.jpeg-png,image/vnd.jpeg-png8",
         "service_url": "https://service.pdok.nl/rws/nwbwegen/wms/v1_0?request=GetCapabilities&service=WMS",
         "service_title": "NWB - Wegen WMS",
@@ -74904,7 +75009,7 @@
         ],
         "crs": "EPSG:28992,EPSG:25831,EPSG:25832,EPSG:3034,EPSG:3035,EPSG:3857,EPSG:4258,EPSG:4326,CRS:84",
         "minscale": "1",
-        "maxscale": "50000",
+        "maxscale": "50001",
         "imgformats": "image/png,image/jpeg,image/png; mode=8bit,image/vnd.jpeg-png,image/vnd.jpeg-png8",
         "service_url": "https://service.pdok.nl/rws/nwbwegen/wms/v1_0?request=GetCapabilities&service=WMS",
         "service_title": "NWB - Wegen WMS",
@@ -75138,7 +75243,7 @@
         "maxscale": "",
         "imgformats": "image/png,image/jpeg,image/png; mode=8bit,image/vnd.jpeg-png,image/vnd.jpeg-png8",
         "service_url": "https://service.pdok.nl/rvo/beschermde-gebieden/natura2000/wms/v2_0?request=GetCapabilities&service=WMS",
-        "service_title": "Beschermde Gebieden Natura 2000 (INSPIRE geharmoniseerd) WMS",
+        "service_title": "Natura 2000 (INSPIRE geharmoniseerd) WMS",
         "service_abstract": "Natura 2000 is het samenhangend netwerk van beschermde natuurgebieden in de Europese Unie bestaande uit Vogelrichtlijn- en Habitatrichtlijngebieden. Natura 2000-gebieden zijn een samenvoeging van beide. Bij de overgang naar de Wet natuurbescherming in 2017 zijn de gebieden die waren aangewezen als beschermd natuurmonument op grond van de Natuurbeschermingswet 1998 van rechtswege vervallen. Van de Natura 2000-gebieden die overlappen met beschermde natuurmonumenten zijn de doelen van de beschermde natuurmonumenten daarmee vervallen. In totaal gaat het om 162 Natura 2000-gebieden waarvan vier mariene gebieden in de Exclusieve Economische Zone (EEZ) op de Noordzee. De vigerende Vogelrichtlijngebieden zijn aangewezen in de periode 1995-2016. De Habitatrichtlijngebieden worden aangewezen met de aanwijzing van de betreffende Natura 2000-gebieden. Op 19 juni 2024 is een wijziging in de begrenzing van Rijntakken van kracht geworden. Grenswijzigingen zijn bijgewerkt tot de datum van uitgifte van dit bestand. In gebieden waar nog geen definitief Natura 2000-aanwijzingsbesluit van kracht is, is de grens van het ontwerpbesluit gehanteerd. Als er nog geen ontwerpbesluit is gepubliceerd, is de grens volgens de Europese 'Communautaire Lijst' gehanteerd. En als die lijst nog niet is geactualiseerd, is de aanmelding voor die lijst gehanteerd. Zie daarvoor de informatie in het attribuut STATUS. De begrenzingen zijn bovengronds en in het water van toepassing, met uitzondering van gebiedsdelen met code 'HR groeve' in het attribuut BESCHERMIN (hier maken alleen de ondergrondse kalksteengroeven deel uit van het Habitatrichtlijngebied).",
         "service_type": "wms",
         "service_md_id": "ec1faa6d-2779-42b8-82f8-6d516dcc868f"
@@ -80196,7 +80301,7 @@
             },
             {
                 "title": "FerryCrossing style",
-                "name": "TN.WaterTransportNetwork.FerryCrossing"
+                "name": "TN.WaterTransportNetwork.FerryCrossing.Default"
             }
         ],
         "crs": "EPSG:28992,EPSG:25831,EPSG:25832,EPSG:3034,EPSG:3035,EPSG:3857,EPSG:4258,EPSG:4326,CRS:84",
@@ -83865,6 +83970,17 @@
         "service_abstract": "INSPIRE Adressen themalaag, gevuld met relevante objecten uit de Basisregistratie Adressen en Gebouwen (BAG), beheerd door het Kadaster.",
         "service_type": "wfs",
         "service_md_id": "db566407-fa5a-4df9-83ab-353b9476c44c"
+    },
+    {
+        "name": "gebiedsbeheer:AgglomerationSource",
+        "title": "AgglomerationSource",
+        "abstract": "Het gaat om gegevens over de geluidbron \u2018agglomeraties\u2019, stedelijke gebieden van aangewezen gemeenten.",
+        "dataset_md_id": "52967bce-30cd-4d64-b8da-9f27da828113",
+        "service_url": "https://service.pdok.nl/ienw/gebiedsbeheer/agglomeraties-richtlijn-omgevingslawaai/wfs/v1_0?request=GetCapabilities&service=WFS",
+        "service_title": "Wfs agglomeraties (INSPIRE geharmoniseerd) WFS",
+        "service_abstract": "Het gaat om gegevens over de geluidbron \u2018agglomeraties\u2019, stedelijke gebieden van aangewezen gemeenten.",
+        "service_type": "wfs",
+        "service_md_id": "3e0b67e8-5f4b-4d90-8a33-614dbeef5f39"
     },
     {
         "name": "bag:bagterugmeldingen",
@@ -98821,7 +98937,7 @@
         "abstract": "Het Bestand Wijk- en Buurtkaart 2021 bevat de geometrie van alle gemeenten, wijken en buurten in Nederland met als attribuut een aantal statistische kerncijfers. De begrenzingen van wijken en buurten zijn gebaseerd op wat de gemeenten aan het CBS doorgeven. De gemeentegrens is afkomstig uit de BRK van het Kadaster. De land-watergrens uit het Bestand Bodemgebruik 2017. Deze derde versie bevat de meeste kerncijfers. Hierna volgt geen update meer.",
         "dataset_md_id": "524b1e94-1981-4ef6-be1f-482d309b5db8",
         "service_url": "https://service.pdok.nl/cbs/wijkenbuurten/2021/wfs/v2_0?request=GetCapabilities&service=WFS",
-        "service_title": "CBS Wijken en Buurten ${THEME} versie 3",
+        "service_title": "CBS Wijken en Buurten 2021 versie 3",
         "service_abstract": "Het Bestand Wijk- en Buurtkaart 2021 bevat de geometrie van alle gemeenten, wijken en buurten in Nederland met als attribuut een aantal statistische kerncijfers. De begrenzingen van wijken en buurten zijn gebaseerd op wat de gemeenten aan het CBS doorgeven. De gemeentegrens is afkomstig uit de BRK van het Kadaster. De land-watergrens uit het Bestand Bodemgebruik 2017. Deze derde versie bevat de meeste kerncijfers. Hierna volgt geen update meer.",
         "service_type": "wfs",
         "service_md_id": "60dc9632-50c8-40b1-ac63-cd91b85352d2"
@@ -98832,7 +98948,7 @@
         "abstract": "Het Bestand Wijk- en Buurtkaart 2021 bevat de geometrie van alle gemeenten, wijken en buurten in Nederland met als attribuut een aantal statistische kerncijfers. De begrenzingen van wijken en buurten zijn gebaseerd op wat de gemeenten aan het CBS doorgeven. De gemeentegrens is afkomstig uit de BRK van het Kadaster. De land-watergrens uit het Bestand Bodemgebruik 2017. Deze derde versie bevat de meeste kerncijfers. Hierna volgt geen update meer.",
         "dataset_md_id": "524b1e94-1981-4ef6-be1f-482d309b5db8",
         "service_url": "https://service.pdok.nl/cbs/wijkenbuurten/2021/wfs/v2_0?request=GetCapabilities&service=WFS",
-        "service_title": "CBS Wijken en Buurten ${THEME} versie 3",
+        "service_title": "CBS Wijken en Buurten 2021 versie 3",
         "service_abstract": "Het Bestand Wijk- en Buurtkaart 2021 bevat de geometrie van alle gemeenten, wijken en buurten in Nederland met als attribuut een aantal statistische kerncijfers. De begrenzingen van wijken en buurten zijn gebaseerd op wat de gemeenten aan het CBS doorgeven. De gemeentegrens is afkomstig uit de BRK van het Kadaster. De land-watergrens uit het Bestand Bodemgebruik 2017. Deze derde versie bevat de meeste kerncijfers. Hierna volgt geen update meer.",
         "service_type": "wfs",
         "service_md_id": "60dc9632-50c8-40b1-ac63-cd91b85352d2"
@@ -98843,7 +98959,7 @@
         "abstract": "Het Bestand Wijk- en Buurtkaart 2021 bevat de geometrie van alle gemeenten, wijken en buurten in Nederland met als attribuut een aantal statistische kerncijfers. De begrenzingen van wijken en buurten zijn gebaseerd op wat de gemeenten aan het CBS doorgeven. De gemeentegrens is afkomstig uit de BRK van het Kadaster. De land-watergrens uit het Bestand Bodemgebruik 2017. Deze derde versie bevat de meeste kerncijfers. Hierna volgt geen update meer.",
         "dataset_md_id": "524b1e94-1981-4ef6-be1f-482d309b5db8",
         "service_url": "https://service.pdok.nl/cbs/wijkenbuurten/2021/wfs/v2_0?request=GetCapabilities&service=WFS",
-        "service_title": "CBS Wijken en Buurten ${THEME} versie 3",
+        "service_title": "CBS Wijken en Buurten 2021 versie 3",
         "service_abstract": "Het Bestand Wijk- en Buurtkaart 2021 bevat de geometrie van alle gemeenten, wijken en buurten in Nederland met als attribuut een aantal statistische kerncijfers. De begrenzingen van wijken en buurten zijn gebaseerd op wat de gemeenten aan het CBS doorgeven. De gemeentegrens is afkomstig uit de BRK van het Kadaster. De land-watergrens uit het Bestand Bodemgebruik 2017. Deze derde versie bevat de meeste kerncijfers. Hierna volgt geen update meer.",
         "service_type": "wfs",
         "service_md_id": "60dc9632-50c8-40b1-ac63-cd91b85352d2"
@@ -99243,6 +99359,39 @@
         "service_abstract": "Kaart met de verspreiding van soorten voor de Artikel 17 rapportage Habitatrichtlijn voor periode 2007 - 2012",
         "service_type": "wfs",
         "service_md_id": "9c4862c3-0bab-49c3-bc2f-ac5486826766"
+    },
+    {
+        "name": "vervoersnetwerken:MajorAirportSource",
+        "title": "MajorAirportSource",
+        "abstract": "Het gaat om gegevens over de geluidbron 'Hoofd Luchtvervoersnetwerk'.",
+        "dataset_md_id": "9f876090-9ee4-4a72-8d04-cc8d5a253876",
+        "service_url": "https://service.pdok.nl/ienw/vervoersnetwerken/hoofd-luchtvervoersnetwerk-richtlijn-omgevingslawaai/wfs/v1_0?request=GetCapabilities&service=WFS",
+        "service_title": "Hoofd Luchtvervoersnetwerk - richtlijn omgevingslawaai (INSPIRE geharmoniseerd) WFS",
+        "service_abstract": "Het gaat om gegevens over de geluidbron 'Hoofd Luchtvervoersnetwerk'.",
+        "service_type": "wfs",
+        "service_md_id": "67c89d56-1d24-4484-9b15-191577d95ff2"
+    },
+    {
+        "name": "vervoersnetwerken:MajorRailwaySource",
+        "title": "MajorRailwaySource",
+        "abstract": "Het gaat om gegevens over de geluidbron 'Hoofd spoorwegen'.",
+        "dataset_md_id": "a2338eab-179c-4899-acde-e5fbaa2bbeac",
+        "service_url": "https://service.pdok.nl/ienw/vervoersnetwerken/hoofd-spoorwegen-richtlijn-omgevingslawaai/wfs/v1_0?request=GetCapabilities&service=WFS",
+        "service_title": "Wfs spoorwegen (INSPIRE geharmoniseerd) WFS",
+        "service_abstract": "Het gaat om gegevens over de geluidbron 'Hoofd spoorwegen'.",
+        "service_type": "wfs",
+        "service_md_id": "dd06be92-8d6f-43b5-b2ee-99285635e41d"
+    },
+    {
+        "name": "vervoersnetwerken:MajorRoadSource",
+        "title": "MajorRoadSource",
+        "abstract": "Het gaat om gegevens over de geluidbron 'Hoofdwegen'.",
+        "dataset_md_id": "4f1247e9-e5c0-43fb-8449-271fd02a5219",
+        "service_url": "https://service.pdok.nl/ienw/vervoersnetwerken/hoofdwegen-richtlijn-omgevingslawaai/wfs/v1_0?request=GetCapabilities&service=WFS",
+        "service_title": "Hoofdwegen - Richtlijn omgevingslawaai (INSPIRE geharmoniseerd) WFS",
+        "service_abstract": "Het gaat om gegevens over de geluidbron 'Hoofdwegen'.",
+        "service_type": "wfs",
+        "service_md_id": "ba52aae6-ff18-4af9-b966-ca94bdb111e1"
     },
     {
         "name": "hh:hh-nl-nuts2-doctors-2017",
@@ -99822,7 +99971,7 @@
         "abstract": "Natura 2000 is het samenhangend netwerk van beschermde natuurgebieden in de Europese Unie bestaande uit Vogelrichtlijn- en Habitatrichtlijngebieden. Natura 2000-gebieden zijn een samenvoeging van beide. Bij de overgang naar de Wet natuurbescherming in 2017 zijn de gebieden die waren aangewezen als beschermd natuurmonument op grond van de Natuurbeschermingswet 1998 van rechtswege vervallen. Van de Natura 2000-gebieden die overlappen met beschermde natuurmonumenten zijn de doelen van de beschermde natuurmonumenten daarmee vervallen. In totaal gaat het om 162 Natura 2000-gebieden waarvan vier mariene gebieden in de Exclusieve Economische Zone (EEZ) op de Noordzee. De vigerende Vogelrichtlijngebieden zijn aangewezen in de periode 1995-2016. De Habitatrichtlijngebieden worden aangewezen met de aanwijzing van de betreffende Natura 2000-gebieden. Op 19 juni 2024 is een wijziging in de begrenzing van Rijntakken van kracht geworden. Grenswijzigingen zijn bijgewerkt tot de datum van uitgifte van dit bestand. In gebieden waar nog geen definitief Natura 2000-aanwijzingsbesluit van kracht is, is de grens van het ontwerpbesluit gehanteerd. Als er nog geen ontwerpbesluit is gepubliceerd, is de grens volgens de Europese 'Communautaire Lijst' gehanteerd. En als die lijst nog niet is geactualiseerd, is de aanmelding voor die lijst gehanteerd. Zie daarvoor de informatie in het attribuut STATUS. De begrenzingen zijn bovengronds en in het water van toepassing, met uitzondering van gebiedsdelen met code 'HR groeve' in het attribuut BESCHERMIN (hier maken alleen de ondergrondse kalksteengroeven deel uit van het Habitatrichtlijngebied).",
         "dataset_md_id": "280ed37a-b8d2-4ac5-8567-04d84fad3a41",
         "service_url": "https://service.pdok.nl/rvo/beschermde-gebieden/natura2000/wfs/v2_0?request=GetCapabilities&service=WFS",
-        "service_title": "Beschermde Gebieden Natura 2000 (INSPIRE geharmoniseerd) WFS",
+        "service_title": "Natura 2000 (INSPIRE geharmoniseerd) WFS",
         "service_abstract": "Natura 2000 is het samenhangend netwerk van beschermde natuurgebieden in de Europese Unie bestaande uit Vogelrichtlijn- en Habitatrichtlijngebieden. Natura 2000-gebieden zijn een samenvoeging van beide. Bij de overgang naar de Wet natuurbescherming in 2017 zijn de gebieden die waren aangewezen als beschermd natuurmonument op grond van de Natuurbeschermingswet 1998 van rechtswege vervallen. Van de Natura 2000-gebieden die overlappen met beschermde natuurmonumenten zijn de doelen van de beschermde natuurmonumenten daarmee vervallen. In totaal gaat het om 162 Natura 2000-gebieden waarvan vier mariene gebieden in de Exclusieve Economische Zone (EEZ) op de Noordzee. De vigerende Vogelrichtlijngebieden zijn aangewezen in de periode 1995-2016. De Habitatrichtlijngebieden worden aangewezen met de aanwijzing van de betreffende Natura 2000-gebieden. Op 19 juni 2024 is een wijziging in de begrenzing van Rijntakken van kracht geworden. Grenswijzigingen zijn bijgewerkt tot de datum van uitgifte van dit bestand. In gebieden waar nog geen definitief Natura 2000-aanwijzingsbesluit van kracht is, is de grens van het ontwerpbesluit gehanteerd. Als er nog geen ontwerpbesluit is gepubliceerd, is de grens volgens de Europese 'Communautaire Lijst' gehanteerd. En als die lijst nog niet is geactualiseerd, is de aanmelding voor die lijst gehanteerd. Zie daarvoor de informatie in het attribuut STATUS. De begrenzingen zijn bovengronds en in het water van toepassing, met uitzondering van gebiedsdelen met code 'HR groeve' in het attribuut BESCHERMIN (hier maken alleen de ondergrondse kalksteengroeven deel uit van het Habitatrichtlijngebied).",
         "service_type": "wfs",
         "service_md_id": "a2cc9d14-1eea-4659-b341-735d94b29902"
@@ -101030,7 +101179,7 @@
         "name": "vervoersnetwerken:buoy",
         "title": "Boei",
         "abstract": "Een drijvend object dat aan de bodem is afgemeerd in een (in kaart gebrachte) plaats, als hulpmiddel bij het navigatie of voor andere specifieke doeleinden.",
-        "dataset_md_id": "cfc800cb-e903-4364-9415-ddd3e0ecf49f ",
+        "dataset_md_id": "cfc800cb-e903-4364-9415-ddd3e0ecf49f",
         "service_url": "https://service.pdok.nl/rws/vervoersnetwerken/waterwegen/wfs/v1_0?request=GetCapabilities&service=WFS",
         "service_title": "Vervoersnetwerken - Waterwegen - Netwerk (INSPIRE geharmoniseerd) WFS",
         "service_abstract": "De wfs Vervoersnetwerken - Waterwegen - Netwerk bevat het INSPIRE-compliant netwerk van knoopunten (nodes) en vaarwegvakken (links)",
@@ -101041,7 +101190,7 @@
         "name": "vervoersnetwerken:traffic_separation_scheme_separator",
         "title": "Verkeersscheidingsstelselscheider",
         "abstract": "Een zone die de vaarroutes scheidt waarin schepen tegengesteld of bijna tegengesteld varen of het scheiden van vaarwegen die aangewezen zijn voor bepaalde klassen van schepen die in dezelfde richting varen.",
-        "dataset_md_id": "cfc800cb-e903-4364-9415-ddd3e0ecf49f ",
+        "dataset_md_id": "cfc800cb-e903-4364-9415-ddd3e0ecf49f",
         "service_url": "https://service.pdok.nl/rws/vervoersnetwerken/waterwegen/wfs/v1_0?request=GetCapabilities&service=WFS",
         "service_title": "Vervoersnetwerken - Waterwegen - Netwerk (INSPIRE geharmoniseerd) WFS",
         "service_abstract": "De wfs Vervoersnetwerken - Waterwegen - Netwerk bevat het INSPIRE-compliant netwerk van knoopunten (nodes) en vaarwegvakken (links)",
@@ -101052,7 +101201,7 @@
         "name": "vervoersnetwerken:beacon",
         "title": "Baken",
         "abstract": "Een prominent speciaal geconstrueerd object dat een opvallend merkteken vormt als vast hulpmiddel bij navigatie of voor gebruik bij hydrografisch onderzoek.",
-        "dataset_md_id": "cfc800cb-e903-4364-9415-ddd3e0ecf49f ",
+        "dataset_md_id": "cfc800cb-e903-4364-9415-ddd3e0ecf49f",
         "service_url": "https://service.pdok.nl/rws/vervoersnetwerken/waterwegen/wfs/v1_0?request=GetCapabilities&service=WFS",
         "service_title": "Vervoersnetwerken - Waterwegen - Netwerk (INSPIRE geharmoniseerd) WFS",
         "service_abstract": "De wfs Vervoersnetwerken - Waterwegen - Netwerk bevat het INSPIRE-compliant netwerk van knoopunten (nodes) en vaarwegvakken (links)",
@@ -101063,7 +101212,7 @@
         "name": "vervoersnetwerken:waterway_node",
         "title": "Waterwegknooppunt",
         "abstract": "Een puntvormig ruimtelijk object in het watertransportnetwerk dat de connectiviteit  tussen twee verschillende vaarwegvakken.",
-        "dataset_md_id": "cfc800cb-e903-4364-9415-ddd3e0ecf49f ",
+        "dataset_md_id": "cfc800cb-e903-4364-9415-ddd3e0ecf49f",
         "service_url": "https://service.pdok.nl/rws/vervoersnetwerken/waterwegen/wfs/v1_0?request=GetCapabilities&service=WFS",
         "service_title": "Vervoersnetwerken - Waterwegen - Netwerk (INSPIRE geharmoniseerd) WFS",
         "service_abstract": "De wfs Vervoersnetwerken - Waterwegen - Netwerk bevat het INSPIRE-compliant netwerk van knoopunten (nodes) en vaarwegvakken (links)",
@@ -101074,7 +101223,7 @@
         "name": "vervoersnetwerken:waterway_link",
         "title": "Waterweglink",
         "abstract": "Een lijnvormig ruimtelijk object in het watertransportnetwerk dat de geometrie of connectiviteit  tussen twee opeenvolgende vaarwegvakken of knooppunten van vaarwegen verbindt voor de scheepvaart.",
-        "dataset_md_id": "cfc800cb-e903-4364-9415-ddd3e0ecf49f ",
+        "dataset_md_id": "cfc800cb-e903-4364-9415-ddd3e0ecf49f",
         "service_url": "https://service.pdok.nl/rws/vervoersnetwerken/waterwegen/wfs/v1_0?request=GetCapabilities&service=WFS",
         "service_title": "Vervoersnetwerken - Waterwegen - Netwerk (INSPIRE geharmoniseerd) WFS",
         "service_abstract": "De wfs Vervoersnetwerken - Waterwegen - Netwerk bevat het INSPIRE-compliant netwerk van knoopunten (nodes) en vaarwegvakken (links)",
@@ -101085,7 +101234,7 @@
         "name": "vervoersnetwerken:traffic_separation_scheme_crossing",
         "title": "Verkeersscheidingsstelselkruising",
         "abstract": "Een afgebakend gebied waar vaarwegen elkaar kruisen.",
-        "dataset_md_id": "cfc800cb-e903-4364-9415-ddd3e0ecf49f ",
+        "dataset_md_id": "cfc800cb-e903-4364-9415-ddd3e0ecf49f",
         "service_url": "https://service.pdok.nl/rws/vervoersnetwerken/waterwegen/wfs/v1_0?request=GetCapabilities&service=WFS",
         "service_title": "Vervoersnetwerken - Waterwegen - Netwerk (INSPIRE geharmoniseerd) WFS",
         "service_abstract": "De wfs Vervoersnetwerken - Waterwegen - Netwerk bevat het INSPIRE-compliant netwerk van knoopunten (nodes) en vaarwegvakken (links)",
@@ -101096,7 +101245,7 @@
         "name": "vervoersnetwerken:marker_post",
         "title": "Markeerstok",
         "abstract": "Referentiemarkering in een vervoersnetwerk, meestal met regelmatige tussenpozen, die de afstand aangeeft vanaf het begin van de route, of een ander referentiepunt, tot het punt waar de markering zich bevindt.",
-        "dataset_md_id": "cfc800cb-e903-4364-9415-ddd3e0ecf49f ",
+        "dataset_md_id": "cfc800cb-e903-4364-9415-ddd3e0ecf49f",
         "service_url": "https://service.pdok.nl/rws/vervoersnetwerken/waterwegen/wfs/v1_0?request=GetCapabilities&service=WFS",
         "service_title": "Vervoersnetwerken - Waterwegen - Netwerk (INSPIRE geharmoniseerd) WFS",
         "service_abstract": "De wfs Vervoersnetwerken - Waterwegen - Netwerk bevat het INSPIRE-compliant netwerk van knoopunten (nodes) en vaarwegvakken (links)",

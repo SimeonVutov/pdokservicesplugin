@@ -603,7 +603,9 @@ class PdokServicesPlugin(object):
         Wat op basis van de documentatie wel de manier is om een wmts laag toe te voegen.
         """
         parse_result = urllib.parse.urlparse(url)
-        location = f"{parse_result.scheme}://{parse_result.netloc}/{parse_result.path}"
+        #location = f"{parse_result.scheme}://{parse_result.netloc}/{parse_result.path}"
+        # do NOT put an extra / between netloc and path !
+        location = f"{parse_result.scheme}://{parse_result.netloc}{parse_result.path}"
         query = parse_result.query
         query_escaped_quoted = urllib.parse.quote_plus(query)
         url = f"{location}?{query_escaped_quoted}"

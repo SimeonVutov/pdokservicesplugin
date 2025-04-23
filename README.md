@@ -1,5 +1,8 @@
 ## PDOK Service Plugin
 
+
+<img src="https://img.shields.io/liberapay/receives/rduivenvoorde.svg?logo=liberapay">
+
 ## English
 
 This plugin is probably only interesting for the dutch audience.
