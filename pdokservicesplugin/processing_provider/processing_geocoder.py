@@ -172,7 +172,7 @@ class PDOKGeocoder(QgsProcessingAlgorithm):
             QgsProcessingParameterFeatureSource(
                 self.INPUT,
                 self.tr("Input layer"),
-                types=[QgsProcessing.TypeFile],
+                types=[QgsProcessing.SourceType.TypeFile],
             )
         )
         self.addParameter(
@@ -237,7 +237,7 @@ class PDOKGeocoder(QgsProcessingAlgorithm):
             QgsProcessingParameterNumber(
                 self.SCORE_THRESHOLD,
                 self.tr("Score threshold"),
-                type=QgsProcessingParameterNumber.Double,
+                type=QgsProcessingParameterNumber.Type.Double,
                 defaultValue=None,
                 optional=True,
                 minValue=0,
@@ -304,7 +304,7 @@ class PDOKGeocoder(QgsProcessingAlgorithm):
 
             result_geom_type = result_type.geom_type()
             if not get_actual_geom:
-                result_geom_type = QgsWkbTypes.Point
+                result_geom_type = QgsWkbTypes.Type.Point
 
             (sink, dest_id) = self.parameterAsSink(
                 parameters,

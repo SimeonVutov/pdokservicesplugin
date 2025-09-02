@@ -143,7 +143,7 @@ class PDOKWCSTool(QgsProcessingAlgorithm):
                 QgsProcessingParameterFeatureSource(
                     self.INPUT,
                     self.tr("Input point layer"),
-                    types=[QgsProcessing.TypeVectorPoint],
+                    types=[QgsProcessing.SourceType.TypeVectorPoint],
                 )
             )
             self.addParameter(

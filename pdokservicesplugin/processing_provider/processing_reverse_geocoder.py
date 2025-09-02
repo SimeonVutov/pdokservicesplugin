@@ -141,7 +141,7 @@ class PDOKReverseGeocoder(QgsProcessingAlgorithm):
             QgsProcessingParameterFeatureSource(
                 self.INPUT,
                 self.tr("Input point layer"),
-                types=[QgsProcessing.TypeVectorPoint],
+                types=[QgsProcessing.SourceType.TypeVectorPoint],
             )
         )
         self.addParameter(
@@ -173,7 +173,7 @@ class PDOKReverseGeocoder(QgsProcessingAlgorithm):
             optional=True,
             minValue=0,
         )
-        dist_param.setDefaultUnit(QgsUnitTypes.DistanceMeters)
+        dist_param.setDefaultUnit(QgsUnitTypes.DistanceUnit.DistanceMeters)
         self.addParameter(dist_param)
 
     def processAlgorithm(self, parameters, context, feedback):
@@ -211,7 +211,7 @@ class PDOKReverseGeocoder(QgsProcessingAlgorithm):
                 self.OUTPUT,
                 context,
                 input_layer_fields,
-                QgsWkbTypes.Point,
+                QgsWkbTypes.Type.Point,
                 input_points.sourceCrs(),
             )
 

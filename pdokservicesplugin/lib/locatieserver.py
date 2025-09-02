@@ -39,18 +39,18 @@ class LsType(Enum):
 
     def geom_type(self) -> QgsWkbTypes:
         geom_type_mapping = {
-            "adres": QgsWkbTypes.Point,
-            "appartementsrecht": QgsWkbTypes.MultiPoint,
-            "buurt": QgsWkbTypes.MultiPolygon,
-            "gemeente": QgsWkbTypes.MultiPolygon,
-            "hectometerpaal": QgsWkbTypes.Point,
-            "perceel": QgsWkbTypes.Polygon,
-            "postcode": QgsWkbTypes.Point,
-            "provincie": QgsWkbTypes.MultiPolygon,
-            "weg": QgsWkbTypes.MultiLineString,
-            "wijk": QgsWkbTypes.MultiPolygon,
-            "waterschap": QgsWkbTypes.MultiPolygon,
-            "woonplaats": QgsWkbTypes.MultiPolygon,
+            "adres": QgsWkbTypes.Type.Point,
+            "appartementsrecht": QgsWkbTypes.Type.MultiPoint,
+            "buurt": QgsWkbTypes.Type.MultiPolygon,
+            "gemeente": QgsWkbTypes.Type.MultiPolygon,
+            "hectometerpaal": QgsWkbTypes.Type.Point,
+            "perceel": QgsWkbTypes.Type.Polygon,
+            "postcode": QgsWkbTypes.Type.Point,
+            "provincie": QgsWkbTypes.Type.MultiPolygon,
+            "weg": QgsWkbTypes.Type.MultiLineString,
+            "wijk": QgsWkbTypes.Type.MultiPolygon,
+            "waterschap": QgsWkbTypes.Type.MultiPolygon,
+            "woonplaats": QgsWkbTypes.Type.MultiPolygon,
         }
         return geom_type_mapping[self.value]
 

@@ -1175,18 +1175,18 @@ class PdokServicesPlugin(object):
         geom_type = geom.type()
 
         geom_type_dict = {
-            QgsWkbTypes.PointGeometry: "point",
-            QgsWkbTypes.LineGeometry: "linestring",
-            QgsWkbTypes.PolygonGeometry: "polygon",
+            QgsWkbTypes.GeometryType.PointGeometry: "point",
+            QgsWkbTypes.GeometryType.LineGeometry: "linestring",
+            QgsWkbTypes.GeometryType.PolygonGeometry: "polygon",
         }
         if geom_type not in geom_type_dict:
             self.info(
                 f"unexpected geomtype return by ls: {geom_type}"
             )  # TODO: better error handling
             return
-        if geom_type == QgsWkbTypes.PolygonGeometry:
+        if geom_type == QgsWkbTypes.GeometryType.PolygonGeometry:
             # flashGeometries will flash a opaque polygon... let's create a linestring from it so it is less obnoxious
-            geom = geom.convertToType(QgsWkbTypes.LineGeometry, destMultipart=True)
+            geom = geom.convertToType(QgsWkbTypes.GeometryType.LineGeometry, destMultipart=True)
 
         if show_ls_feature:
             self.iface.mapCanvas().flashGeometries(
