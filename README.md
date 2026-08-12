@@ -50,7 +50,7 @@ Format python code with:
 black pdokservicesplugin
 ```
 
-Update layers config file in [`pdokservicesplugin/resources/layers-pdok.json`](pdokservicesplugin/resources/layers-pdok.json) (run from root of repo):
+Update layers config file in [`pdokservicesplugin/resources/layers-pdok.json`](pdokservicesplugin/resources/layers-pdok-nieuw.json) (run from root of repo):
 Note: some layers (specifically OpenBasisKaart) are added manually, make sure not to delete those.
 
 ```sh

@@ -326,8 +326,8 @@ class PdokServicesPlugin(object):
             self.iface.removePluginMenu(f"&{PLUGIN_NAME}", self.run_action)
             self.iface.removePluginMenu(f"&{PLUGIN_NAME}", self.about_action)
             del self.toolbar
-        except Exception:
-            pass
+        except Exception as e:
+            log.debug(f"Probable ignorable issue during unload of plugin: {e}")
         QgsApplication.processingRegistry().removeProvider(self.provider)
 
     def get_dd(self, val, val_string=""):
