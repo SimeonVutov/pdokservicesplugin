@@ -53,10 +53,9 @@ class PDOKReverseGeocoder(QgsProcessingAlgorithm):
     """
 
     def tr(self, string):
-        """
-        Returns a translatable string with the self.tr() function.
-        """
-        return QCoreApplication.translate("Processing", string)
+        # QgsProcessingAlgorithm is not a QObject, so it has no tr of its own.
+        # The context must be the class name, which is what lupdate records.
+        return QCoreApplication.translate(self.__class__.__name__, string)
 
     def createInstance(self):
         # Must return a new copy of your tool.

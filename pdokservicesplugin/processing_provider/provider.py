@@ -20,7 +20,8 @@ class Provider(QgsProcessingProvider):
         return PLUGIN_ID
 
     def name(self, *args, **kwargs):
-        return self.tr(PLUGIN_NAME)
+        # Product name: not translated.
+        return PLUGIN_NAME
 
     def icon(self):
         provider_path = os.path.dirname(__file__)
