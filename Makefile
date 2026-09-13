@@ -49,4 +49,4 @@ transclean:
 	rm -f $(I18N_DIR)/*.qm
 
 test:
-	python3 -m unittest discover -s tests -t . -v
+	QT_QPA_PLATFORM=offscreen python3 -m unittest discover -s tests -t . -v

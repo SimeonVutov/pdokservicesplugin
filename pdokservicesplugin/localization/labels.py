@@ -66,6 +66,24 @@ class LayerLabel:
         return bilingual(self.translated_service_title, self.source_service_title)
 
     @property
+    def search_terms(self):
+        """Everything a user might reasonably type to find this layer: the
+        translation, the Dutch original and the identifier."""
+        seen = set()
+        terms = []
+        for term in (
+            self.identifier,
+            self.source_title,
+            self.translated_title,
+            self.source_service_title,
+            self.translated_service_title,
+        ):
+            if term and term.casefold() not in seen:
+                seen.add(term.casefold())
+                terms.append(term)
+        return terms
+
+    @property
     def is_translated(self) -> bool:
         return bool(self.translated_title) and (
             self.translated_title.strip().casefold()

@@ -147,263 +147,271 @@
 </context><context>
     <name>PdokServicesPlugin</name>
     <message>
-        <location filename="../pdokservicesplugin.py" line="1180" />
-        <location filename="../pdokservicesplugin.py" line="218" />
+        <location filename="../pdokservicesplugin.py" line="1250" />
+        <location filename="../pdokservicesplugin.py" line="220" />
         <source>Taal</source>
         <translation>Language</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="1208" />
-        <location filename="../pdokservicesplugin.py" line="234" />
+        <location filename="../pdokservicesplugin.py" line="1278" />
+        <location filename="../pdokservicesplugin.py" line="236" />
         <source>Zoek in PDOK Locatieserver</source>
         <translation>Search PDOK Location Server</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="1207" />
-        <location filename="../pdokservicesplugin.py" line="248" />
+        <location filename="../pdokservicesplugin.py" line="1277" />
+        <location filename="../pdokservicesplugin.py" line="250" />
         <source>Cleanup</source>
         <translation>Clear result</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="1206" />
-        <location filename="../pdokservicesplugin.py" line="258" />
+        <location filename="../pdokservicesplugin.py" line="1276" />
+        <location filename="../pdokservicesplugin.py" line="260" />
         <source>About</source>
         <translation>About</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="1210" />
-        <location filename="../pdokservicesplugin.py" line="289" />
+        <location filename="../pdokservicesplugin.py" line="1280" />
+        <location filename="../pdokservicesplugin.py" line="291" />
         <source>Zoek in PDOK Locatieserver, bv postcode of postcode huisnummer</source>
         <translation>Search PDOK Location Server, e.g. postcode or postcode and house number</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="1213" />
-        <location filename="../pdokservicesplugin.py" line="294" />
+        <location filename="../pdokservicesplugin.py" line="1283" />
+        <location filename="../pdokservicesplugin.py" line="296" />
         <source>een of meer zoekwoorden uit resultaat</source>
         <translation>one or more search terms from the result</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="342" />
+        <location filename="../pdokservicesplugin.py" line="344" />
         <source>Deze plugin wordt gemaakt door Richard Duivenvoorde (&lt;a href="http://www.zuidt.nl"&gt;&lt;span&gt;Zuidt&lt;/span&gt;&lt;/a&gt;). &lt;br /&gt;De code van deze plugin is te vinden op &lt;a href="https://codeberg.org/rduivenvoorde/pdokservicesplugin"&gt;&lt;span&gt;Codeberg&lt;/span&gt;&lt;/a&gt;. Bugs kunt u daar melden.</source>
         <translation>This plugin is made by Richard Duivenvoorde (&lt;a href="http://www.zuidt.nl"&gt;&lt;span&gt;Zuidt&lt;/span&gt;&lt;/a&gt;). &lt;br /&gt;The code of this plugin can be found on &lt;a href="https://codeberg.org/rduivenvoorde/pdokservicesplugin"&gt;&lt;span&gt;Codeberg&lt;/span&gt;&lt;/a&gt;. You can report bugs there.</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="349" />
+        <location filename="../pdokservicesplugin.py" line="351" />
         <source>&lt;a href="http://www.pdok.nl"&gt;&lt;span&gt;PDOK&lt;/span&gt;&lt;/a&gt; stelt webservices beschikbaar van landsdekkende geo-informatie afkomstig van overheden. Deze data komen rechtstreeks bij de bron vandaan, d.w.z. dat overheidsorganisaties bronhouder van deze data zijn. Daardoor zijn de data actueel en betrouwbaar. Bovendien zijn ze door elke afnemer (overheid, bedrijf, particulier) kosteloos te gebruiken.</source>
         <translation>&lt;a href="http://www.pdok.nl"&gt;&lt;span&gt;PDOK&lt;/span&gt;&lt;/a&gt; publishes web services with nationwide geo-information from Dutch public authorities. The data comes straight from the source, meaning that the public authorities are its custodians. That is what makes it current and reliable. It is also free of charge for everyone to use, whether government, business or private individual.</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="358" />
+        <location filename="../pdokservicesplugin.py" line="360" />
         <source>De lijst van services en lagen in deze plugin worden met behulp van het 'pdok/ngr-services-spider' script gegeneerd (te vinden op &lt;a href="https://github.com/PDOK/ngr-services-spider"&gt;&lt;span&gt;PDOK/ngr-services-spider&lt;/span&gt;&lt;/a&gt;&lt;span &gt;). Dit script genereert deze lijst op basis van de &lt;/span&gt;&lt;a href="https://www.nationaalgeoregister.nl/geonetwork/srv/dut/csw?service=CSW&amp;amp;request=GetCapabilities&amp;amp;version=2.0.2"&gt;&lt;span&gt;CSW service&lt;/span&gt;&lt;/a&gt; van het &lt;a href="https://www.nationaalgeoregister.nl/"&gt;&lt;span&gt;Nationaal Georegister&lt;/span&gt;&lt;/a&gt;.</source>
         <translation>The list of services and layers in this plugin is generated with the 'pdok/ngr-services-spider' script (found at &lt;a href="https://github.com/PDOK/ngr-services-spider"&gt;&lt;span&gt;PDOK/ngr-services-spider&lt;/span&gt;&lt;/a&gt;&lt;span &gt;). That script builds the list from the &lt;/span&gt;&lt;a href="https://www.nationaalgeoregister.nl/geonetwork/srv/dut/csw?service=CSW&amp;amp;request=GetCapabilities&amp;amp;version=2.0.2"&gt;&lt;span&gt;CSW service&lt;/span&gt;&lt;/a&gt; of the &lt;a href="https://www.nationaalgeoregister.nl/"&gt;&lt;span&gt;Nationaal Georegister&lt;/span&gt;&lt;/a&gt;.</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="369" />
+        <location filename="../pdokservicesplugin.py" line="371" />
         <source>De &lt;a href="http://www.opengeogroep.nl"&gt;&lt;span&gt;OpenGeoGroep&lt;/span&gt;&lt;/a&gt; is een commerciele ICT-dienstverlener die diensten en oplossingen biedt voor geo-informatie vraagstukken. Al onze diensten zijn leveranciersonafhankelijk. De OpenGeoGroep onderscheidt zich door het aanbieden van diensten en innovatieve oplossingen gebaseerd op professionele Open Source Software en op basis van Open Standaarden.</source>
         <translation>The &lt;a href="http://www.opengeogroep.nl"&gt;&lt;span&gt;OpenGeoGroep&lt;/span&gt;&lt;/a&gt; is a commercial ICT service provider offering services and solutions for geo-information problems. All of our services are vendor independent. The OpenGeoGroep sets itself apart by offering services and innovative solutions built on professional Open Source Software and on Open Standards.</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="411" />
+        <location filename="../pdokservicesplugin.py" line="413" />
         <source>Niet ingevuld</source>
         <translation>Not provided</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="458" />
+        <location filename="../pdokservicesplugin.py" line="474" />
         <source>[service title niet ingevuld]</source>
         <translation>[service title not provided]</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="486" />
+        <location filename="../pdokservicesplugin.py" line="502" />
         <source>Maxscale</source>
         <translation>Max scale</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="492" />
+        <location filename="../pdokservicesplugin.py" line="508" />
         <source>Minscale</source>
         <translation>Min scale</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="518" />
-        <location filename="../pdokservicesplugin.py" line="508" />
+        <location filename="../pdokservicesplugin.py" line="534" />
+        <location filename="../pdokservicesplugin.py" line="524" />
         <source>Info</source>
         <translation>Info</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="513" />
+        <location filename="../pdokservicesplugin.py" line="529" />
         <source>Bekijk dataset metadata in NGR</source>
         <translation>View dataset metadata in NGR</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="524" />
+        <location filename="../pdokservicesplugin.py" line="540" />
         <source>Bekijk service metadata in NGR</source>
         <translation>View service metadata in NGR</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="531" />
+        <location filename="../pdokservicesplugin.py" line="547" />
         <source>favoriet</source>
         <translation>favourite</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="536" />
+        <location filename="../pdokservicesplugin.py" line="553" />
+        <source>Vertaalde naam</source>
+        <translation>English name</translation>
+    </message>
+    <message>
+        <location filename="../pdokservicesplugin.py" line="555" />
+        <source>Officiële PDOK naam</source>
+        <translation>Official PDOK name</translation>
+    </message>
+    <message>
+        <location filename="../pdokservicesplugin.py" line="562" />
         <source>Ontwikkelaars informatie</source>
         <translation>Developer information</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="538" />
+        <location filename="../pdokservicesplugin.py" line="564" />
         <source>URLs voor Tiles</source>
         <translation>URLs for tiles</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="542" />
+        <location filename="../pdokservicesplugin.py" line="568" />
         <source>URLs voor Styles</source>
         <translation>URLs for styles</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="556" />
+        <location filename="../pdokservicesplugin.py" line="583" />
         <source>Name</source>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="558" />
+        <location filename="../pdokservicesplugin.py" line="585" />
         <source>Abstract</source>
         <translation>Abstract</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="560" />
+        <location filename="../pdokservicesplugin.py" line="587" />
         <source>Dataset Metadata</source>
         <translation>Dataset metadata</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="565" />
+        <location filename="../pdokservicesplugin.py" line="592" />
         <source>Service Informatie</source>
         <translation>Service information</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="567" />
+        <location filename="../pdokservicesplugin.py" line="594" />
         <source>Service Title</source>
         <translation>Service title</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="568" />
+        <location filename="../pdokservicesplugin.py" line="595" />
         <source>Bekijk service capabilities</source>
         <translation>View service capabilities</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="569" />
+        <location filename="../pdokservicesplugin.py" line="596" />
         <source>Service Type</source>
         <translation>Service type</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="571" />
+        <location filename="../pdokservicesplugin.py" line="598" />
         <source>Service Abstract</source>
         <translation>Service abstract</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="573" />
+        <location filename="../pdokservicesplugin.py" line="600" />
         <source>Service Metadata</source>
         <translation>Service metadata</translation>
     </message>
     <message numerus="yes">
-        <location filename="../pdokservicesplugin.py" line="597" />
+        <location filename="../pdokservicesplugin.py" line="624" />
         <source>Style (%n stijl(en) beschikbaar)</source>
         <translation>
-            <numerusform>Style (%n style available)</numerusform>
-            <numerusform>Style (%n styles available)</numerusform>
-        </translation>
+            <numerusform>Style (%n style available)</numerusform><numerusform>Style (%n styles available)</numerusform></translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="638" />
+        <location filename="../pdokservicesplugin.py" line="665" />
         <source>OGC API - Tiles wordt momenteel alleen correct weergegeven in webmercator CRS (EPSG:3857). Het gebruik van andere CRS zorgt momenteel voor foutieve projecties. Zie: https://github.com/qgis/QGIS/issues/54673</source>
         <translation>OGC API - Tiles is currently only rendered correctly in the Web Mercator CRS (EPSG:3857). Using another CRS currently results in incorrect projections. See: https://github.com/qgis/QGIS/issues/54673</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="749" />
+        <location filename="../pdokservicesplugin.py" line="776" />
         <source>Sorry, dit type laag: '{service_type}' kan niet worden geladen door de plugin of door QGIS. Is het niet beschikbaar als wms, wmts, wfs, api features of api tiles (vectortile)?</source>
         <translation>Sorry, this layer type '{service_type}' cannot be loaded by the plugin or by QGIS. Is it not available as wms, wmts, wfs, api features or api tiles (vector tile)?</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="780" />
+        <location filename="../pdokservicesplugin.py" line="807" />
         <source>Sorry, dit type layer: '{service_type}' kan niet worden geladen in deze versie van QGIS. Of is de laag niet ook beschikbaar als wms of wfs?</source>
         <translation>Sorry, this layer type '{service_type}' cannot be loaded in this version of QGIS. Is the layer not also available as wms or wfs?</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="969" />
+        <location filename="../pdokservicesplugin.py" line="1036" />
         <source>Resultaat</source>
         <translation>Result</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="1153" />
-        <location filename="../pdokservicesplugin.py" line="972" />
+        <location filename="../pdokservicesplugin.py" line="1223" />
+        <location filename="../pdokservicesplugin.py" line="1039" />
         <source>Type</source>
         <translation>Type</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="1419" />
-        <location filename="../pdokservicesplugin.py" line="1269" />
-        <location filename="../pdokservicesplugin.py" line="985" />
+        <location filename="../pdokservicesplugin.py" line="1490" />
+        <location filename="../pdokservicesplugin.py" line="1340" />
+        <location filename="../pdokservicesplugin.py" line="1052" />
         <source>HTTP Request Error</source>
         <translation>HTTP request error</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="1420" />
-        <location filename="../pdokservicesplugin.py" line="1270" />
-        <location filename="../pdokservicesplugin.py" line="986" />
+        <location filename="../pdokservicesplugin.py" line="1491" />
+        <location filename="../pdokservicesplugin.py" line="1341" />
+        <location filename="../pdokservicesplugin.py" line="1053" />
         <source>an error occured while executing HTTP request, error:</source>
         <translation>An error occurred while executing the HTTP request:</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="1152" />
+        <location filename="../pdokservicesplugin.py" line="1222" />
         <source>Service</source>
         <translation>Service</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="1154" />
+        <location filename="../pdokservicesplugin.py" line="1224" />
         <source>Laagnaam</source>
         <translation>Layer name</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="1164" />
+        <location filename="../pdokservicesplugin.py" line="1234" />
         <source>Automatisch (volg QGIS)</source>
         <translation>Automatic (follow QGIS)</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="1468" />
-        <location filename="../pdokservicesplugin.py" line="1455" />
+        <location filename="../pdokservicesplugin.py" line="1539" />
+        <location filename="../pdokservicesplugin.py" line="1526" />
         <source>PDOK plugin</source>
         <translation>PDOK plugin</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="1561" />
+        <location filename="../pdokservicesplugin.py" line="1632" />
         <source>Verplaats favoriet omhoog</source>
         <translation>Move favourite up</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="1562" />
+        <location filename="../pdokservicesplugin.py" line="1633" />
         <source>Verplaats favoriet omlaag</source>
         <translation>Move favourite down</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="1569" />
+        <location filename="../pdokservicesplugin.py" line="1640" />
         <source>Verwijder deze laag uit favorieten</source>
         <translation>Remove this layer from favourites</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="1602" />
+        <location filename="../pdokservicesplugin.py" line="1673" />
         <source>Voeg deze laag toe aan favorieten</source>
         <translation>Add this layer to favourites</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="1638" />
+        <location filename="../pdokservicesplugin.py" line="1709" />
         <source>Geen Favoriet aanwezig (of verouderd)...</source>
         <translation>Favourite missing (or out of date)...</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="1639" />
+        <location filename="../pdokservicesplugin.py" line="1710" />
         <source>Het lijkt erop dat deze Favoriet niet meer bestaat (bij PDOK). Uit uw Favorieten verwijderen?</source>
         <translation>This favourite no longer seems to exist at PDOK. Remove it from your favourites?</translation>
     </message>
     <message>
-        <location filename="../pdokservicesplugin.py" line="1712" />
+        <location filename="../pdokservicesplugin.py" line="1783" />
         <source>Maak een favoriet aan in het PDOK Services tabblad</source>
         <translation>Create a favourite in the PDOK Services tab</translation>
     </message>

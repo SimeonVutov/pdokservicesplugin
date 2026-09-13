@@ -90,7 +90,9 @@ from .localization import (
     SOURCE_LANGUAGE,
     SUPPORTED_LANGUAGES,
     PluginTranslator,
+    current_language,
     label_for_layer,
+    pdok_metadata,
     read_language_preference,
     write_language_preference,
 )
@@ -441,9 +443,23 @@ class PdokServicesPlugin(object):
         )
         self.update_layer_panel()
 
+    def metadata_translations(self):
+        """Curated PDOK names for the active language; empty while in Dutch."""
+        language = current_language()
+        if language == SOURCE_LANGUAGE:
+            return pdok_metadata.EMPTY
+        return pdok_metadata.translations_for(language, self.plugin_dir)
+
     def layer_label(self, layer):
         """Single place where a catalogue entry becomes display text."""
-        return label_for_layer(layer)
+        translations = self.metadata_translations()
+        return label_for_layer(
+            layer,
+            translated_title=pdok_metadata.translated_title(layer, translations),
+            translated_service_title=pdok_metadata.translated_service_title(
+                layer, translations
+            ),
+        )
 
     def update_layer_panel(self):
         url = self.current_layer["service_url"]
@@ -530,6 +546,16 @@ class PdokServicesPlugin(object):
             fav_string = '<img style="margin:10px" src="data:image/PNG;base64, iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAABaUlEQVQ4T62UQU7CQBSG35sEQ7vRbYFEuAGcQI6gSy1GvEE9gXoCuQE12rjVG8AJ5AZ2AbLUVdtInOcbSGsLTaeCk3Qz7++X/39vZhD+eWEZ3swznllHdTs80em1wKlX7SOIoQIRyMuGHblFUC2Q3fkAeLiCkM8uW1sD0+5iiM5locOsuwRZ6DIDnD9Uu1KIff61zfH4w+P8eMRDwgnXJgLlp3UWjWMdfgzhINgzXlnQ1E2wuE6++RV2cOpV2ggVBu6+CBadZeS85v8VHw8r6eEu0PTkM0PZBrp+jDaOzfuj4RDiXZnISHRV64WDtHYDOPPMGxZclwGy5rZuB0qfrByHpksIF2WASHBf6wX9QuDUM0YIeFQGSEDjhh12dZFpHaacqL085xw5kzJ79Z6qTSnF2y+QXoQgxzqNfLU35/q3RDedQAjZiutKkzOU5WMKQtLAOo9GedFXdx4dVePnLHPfte9hmV6mNT+oioxxBG338AAAAABJRU5ErkJggg==[" align="left" />&nbsp;&nbsp;'
             fav_title = f"&nbsp;[{self.tr('favoriet')}]"
 
+        # Keep the three concepts apart where there is room to spell them out.
+        translated_name_rows = ""
+        if label.is_translated:
+            translated_name_rows = f"""
+                <dt><b>{self.tr('Vertaalde naam')}</b></dt>
+                <dd>{label.translated_title}</dd>
+                <dt><b>{self.tr('Officiële PDOK naam')}</b></dt>
+                <dd>{label.source_title}</dd>
+            """
+
         show_dev_urls = stype == "OGC API - Tiles"
         dev_urls_html = (
             f"""
@@ -553,6 +579,7 @@ class PdokServicesPlugin(object):
             f"""
             <h2>{fav_string}{layername_key} ({stype}) - {title}</h2>
             <dl>
+                {translated_name_rows}
                 <dt><b>{self.tr('Name')}</b></dt>
                 <dd>{layername}</a></dd>
                 <dt><b>{self.tr('Abstract')}</b></dt>
@@ -869,7 +896,47 @@ class PdokServicesPlugin(object):
         new_layer = self.create_new_layer()
         if new_layer is None:
             return
+        self.tag_pdok_layer(new_layer, self.current_layer)
         self.add_layer(new_layer, tree_location)
+
+    def tag_pdok_layer(self, qgis_layer, catalogue_entry):
+        """Record which catalogue entry a map layer came from, so its name can
+        be re-labelled later without parsing it back out of the display text."""
+        label = self.layer_label(catalogue_entry)
+        qgis_layer.setCustomProperty(f"{PLUGIN_ID}/identifier", label.identifier)
+        qgis_layer.setCustomProperty(
+            f"{PLUGIN_ID}/service_md_id", catalogue_entry.get("service_md_id", "")
+        )
+        qgis_layer.setCustomProperty(f"{PLUGIN_ID}/display_title", label.display_title)
+
+    def find_catalogue_entry(self, identifier, service_md_id):
+        for entry in getattr(self, "layers_pdok", []):
+            if (
+                entry.get("name") == identifier
+                and entry.get("service_md_id") == service_md_id
+            ):
+                return entry
+        return None
+
+    def relabel_pdok_layers(self):
+        """Rename layers this plugin added so they follow the active language."""
+        for qgis_layer in QgsProject.instance().mapLayers().values():
+            identifier = qgis_layer.customProperty(f"{PLUGIN_ID}/identifier")
+            if not identifier:
+                continue
+            entry = self.find_catalogue_entry(
+                identifier, qgis_layer.customProperty(f"{PLUGIN_ID}/service_md_id")
+            )
+            if entry is None:
+                continue
+            previous = qgis_layer.customProperty(f"{PLUGIN_ID}/display_title") or ""
+            name = qgis_layer.name()
+            # Anything else means the user renamed it themselves; leave it be.
+            if not previous or not name.startswith(previous):
+                continue
+            new_title = self.layer_label(entry).display_title
+            qgis_layer.setName(f"{new_title}{name[len(previous):]}")
+            qgis_layer.setCustomProperty(f"{PLUGIN_ID}/display_title", new_title)
 
     def add_layer(self, new_layer, tree_location="default"):
         """Adds a QgsLayer to the project and layer tree.
@@ -1033,9 +1100,12 @@ class PdokServicesPlugin(object):
         itemLayername.setToolTip(f"{stype} - {label.display_service_title}")
         itemServicetitle.setText(label.display_service_title)
         itemServicetitle.setToolTip(f"{stype} - {label.display_title}")
-        # itemFilter is the hidden column the search filter runs against.
+        # itemFilter is the hidden column the search filter runs against. It
+        # carries the translation, the Dutch original and the identifier, so a
+        # layer stays findable by any of its names.
+        search_terms = " ".join(label.search_terms)
         itemFilter.setText(
-            f'{serviceLayer["service_type"]} {label.display_title} {label.display_service_title} {serviceLayer["service_abstract"]} {styles_string}'
+            f'{serviceLayer["service_type"]} {search_terms} {serviceLayer["service_abstract"]} {styles_string}'
         )
 
     def add_source_row(self, serviceLayer):
@@ -1218,6 +1288,7 @@ class PdokServicesPlugin(object):
         if self.services_loaded:
             self.set_service_headers()
             self.refresh_source_rows()
+        self.relabel_pdok_layers()
         self.add_fav_actions_to_toolbar_button()
         if self.current_layer is not None:
             self.update_layer_panel()
