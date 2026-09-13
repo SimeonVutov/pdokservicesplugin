@@ -896,7 +896,47 @@ class PdokServicesPlugin(object):
         new_layer = self.create_new_layer()
         if new_layer is None:
             return
+        self.tag_pdok_layer(new_layer, self.current_layer)
         self.add_layer(new_layer, tree_location)
+
+    def tag_pdok_layer(self, qgis_layer, catalogue_entry):
+        """Record which catalogue entry a map layer came from, so its name can
+        be re-labelled later without parsing it back out of the display text."""
+        label = self.layer_label(catalogue_entry)
+        qgis_layer.setCustomProperty(f"{PLUGIN_ID}/identifier", label.identifier)
+        qgis_layer.setCustomProperty(
+            f"{PLUGIN_ID}/service_md_id", catalogue_entry.get("service_md_id", "")
+        )
+        qgis_layer.setCustomProperty(f"{PLUGIN_ID}/display_title", label.display_title)
+
+    def find_catalogue_entry(self, identifier, service_md_id):
+        for entry in getattr(self, "layers_pdok", []):
+            if (
+                entry.get("name") == identifier
+                and entry.get("service_md_id") == service_md_id
+            ):
+                return entry
+        return None
+
+    def relabel_pdok_layers(self):
+        """Rename layers this plugin added so they follow the active language."""
+        for qgis_layer in QgsProject.instance().mapLayers().values():
+            identifier = qgis_layer.customProperty(f"{PLUGIN_ID}/identifier")
+            if not identifier:
+                continue
+            entry = self.find_catalogue_entry(
+                identifier, qgis_layer.customProperty(f"{PLUGIN_ID}/service_md_id")
+            )
+            if entry is None:
+                continue
+            previous = qgis_layer.customProperty(f"{PLUGIN_ID}/display_title") or ""
+            name = qgis_layer.name()
+            # Anything else means the user renamed it themselves; leave it be.
+            if not previous or not name.startswith(previous):
+                continue
+            new_title = self.layer_label(entry).display_title
+            qgis_layer.setName(f"{new_title}{name[len(previous):]}")
+            qgis_layer.setCustomProperty(f"{PLUGIN_ID}/display_title", new_title)
 
     def add_layer(self, new_layer, tree_location="default"):
         """Adds a QgsLayer to the project and layer tree.
@@ -1248,6 +1288,7 @@ class PdokServicesPlugin(object):
         if self.services_loaded:
             self.set_service_headers()
             self.refresh_source_rows()
+        self.relabel_pdok_layers()
         self.add_fav_actions_to_toolbar_button()
         if self.current_layer is not None:
             self.update_layer_panel()
