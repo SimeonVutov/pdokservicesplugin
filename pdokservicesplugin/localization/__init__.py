@@ -13,9 +13,11 @@
  *                                                                         *
  ***************************************************************************/
 
-Translates plugin-owned interface text through Qt. Dutch is the source
-language, so it needs no translation file of its own.
+Two separate concerns: `locale` translates plugin-owned interface text through
+Qt, `labels` presents the names PDOK publishes for its own services and layers
+without losing the authoritative Dutch original.
 """
+from .labels import BILINGUAL_SEPARATOR, LayerLabel, bilingual, label_for_layer
 from .locale import (
     AUTO,
     LANGUAGE_SETTING_KEY,
@@ -36,12 +38,16 @@ from .locale import (
 
 __all__ = [
     "AUTO",
+    "BILINGUAL_SEPARATOR",
     "LANGUAGE_SETTING_KEY",
+    "LayerLabel",
     "PluginTranslator",
     "SOURCE_LANGUAGE",
     "SUPPORTED_LANGUAGES",
+    "bilingual",
     "current_language",
     "is_source_language",
+    "label_for_layer",
     "language_from_locale",
     "qgis_locale_name",
     "read_language_preference",

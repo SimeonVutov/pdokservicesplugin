@@ -84,7 +84,7 @@ from .lib.http_client import PdokServicesNetworkException
 from .locator_filter.pdoklocatieserverfilter import PDOKLocatieserverLocatorFilter
 
 from .lib.constants import PLUGIN_NAME, PLUGIN_ID, DEFAULT_NR_FAVS, SETTINGS_SECTIONS
-from .localization import PluginTranslator
+from .localization import PluginTranslator, label_for_layer
 from .lib.locatieserver import (
     suggest_query,
     TypeFilter,
@@ -370,18 +370,23 @@ class PdokServicesPlugin(object):
         )
         self.update_layer_panel()
 
+    def layer_label(self, layer):
+        """Single place where a catalogue entry becomes display text."""
+        return label_for_layer(layer)
+
     def update_layer_panel(self):
         url = self.current_layer["service_url"]
-        title = self.current_layer["title"]
+        label = self.layer_label(self.current_layer)
+        title = label.display_title
         abstract_dd = self.get_dd(self.current_layer["abstract"])
         service_abstract_dd = self.get_dd(self.current_layer["service_abstract"])
 
         service_title = (
-            self.current_layer["service_title"]
-            if self.current_layer["service_title"]
+            label.display_service_title
+            if label.source_service_title
             else "[service title niet ingevuld]"
         )
-        layername = self.current_layer["name"]
+        layername = label.identifier
         stype = (
             self.service_type_mapping[self.current_layer["service_type"]]
             if self.current_layer["service_type"] in self.service_type_mapping
@@ -649,8 +654,10 @@ class PdokServicesPlugin(object):
 
     def create_new_layer(self):
         servicetype = self.current_layer["service_type"]
-        title = self.current_layer["title"]
-        layername = self.current_layer["name"]
+        label = self.layer_label(self.current_layer)
+        # title only names the layer in the layer tree; requests use identifier
+        title = label.display_title
+        layername = label.identifier
         url = self.current_layer["service_url"]
 
         if servicetype == "wms":
@@ -935,28 +942,29 @@ class PdokServicesPlugin(object):
             if serviceLayer["service_type"] in self.service_type_mapping
             else serviceLayer["service_type"].upper()
         )
+        label = self.layer_label(serviceLayer)
         itemType = QStandardItem(str(stype))
         # userrole is a free form one:
         # only attach the data to the first item
         # service layer = a dict/object with all props of the layer
         itemType.setData(serviceLayer, Qt.ItemDataRole.UserRole)
-        itemType.setToolTip(f'{stype} - {serviceLayer["title"]}')
+        itemType.setToolTip(f"{stype} - {label.display_title}")
         # only wms services have styles (sometimes)
-        layername = serviceLayer["title"]
+        layername = label.display_title
         styles_string = ""
         if "styles" in serviceLayer:
             styles_string = " ".join(
                 [" ".join(x.values()) for x in serviceLayer["styles"]]
             )
 
-        itemLayername = QStandardItem(str(serviceLayer["title"]))
-        itemLayername.setToolTip(f'{stype} - {serviceLayer["service_title"]}')
+        itemLayername = QStandardItem(label.display_title)
+        itemLayername.setToolTip(f"{stype} - {label.display_service_title}")
         # itemFilter is the item used to search filter in. That is why layername is a combi of layername + filter here
         itemFilter = QStandardItem(
-            f'{serviceLayer["service_type"]} {layername} {serviceLayer["service_title"]} {serviceLayer["service_abstract"]} {styles_string}'
+            f'{serviceLayer["service_type"]} {layername} {label.display_service_title} {serviceLayer["service_abstract"]} {styles_string}'
         )
-        itemServicetitle = QStandardItem(str(serviceLayer["service_title"]))
-        itemServicetitle.setToolTip(f'{stype} - {serviceLayer["title"]}')
+        itemServicetitle = QStandardItem(label.display_service_title)
+        itemServicetitle.setToolTip(f"{stype} - {label.display_title}")
         self.sourceModel.appendRow(
             [itemLayername, itemType, itemServicetitle, itemFilter]
         )
