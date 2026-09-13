@@ -1,0 +1,50 @@
+PDOK Services Plugin
+====================
+
+Copyright (C) 2012 Richard Duivenvoorde and contributors.
+
+This program is free software, licensed under the GNU Affero General Public
+License version 3. See the LICENSE file for the full license text.
+
+Original work
+-------------
+
+The PDOK Services Plugin was written by Richard Duivenvoorde (Zuidt,
+https://www.zuidt.nl), with contributions from Raymond Nijssen, Anton Bakker
+and others. The upstream project lives at:
+
+    https://codeberg.org/rduivenvoorde/pdokservicesplugin
+
+All original copyright notices and license headers are kept intact.
+
+Modifications
+-------------
+
+This is an unofficial fork. In accordance with section 5(a) of the GNU Affero
+General Public License, the following changes to the original work are
+recorded here.
+
+Modified by Simeon Vutov, 2026:
+
+  - Added Qt localization infrastructure: locale detection that follows the
+    QGIS language, translator loading with a safe fallback to Dutch, and
+    build targets for extracting and compiling translations.
+  - Separated technical identifiers from display labels throughout the layer
+    catalogue handling.
+  - Internationalized the plugin's own user interface, including the Qt
+    Designer dialog, the Processing algorithms and the locator filter, and
+    added a complete English translation.
+  - Fixed the translation context used by the Processing algorithms, which
+    previously prevented their translations from loading at all.
+  - Added a language switch that re-translates the running plugin without
+    restarting QGIS.
+  - Added curated English names for PDOK services and layers, presented
+    alongside the original Dutch names, with bilingual catalogue search.
+  - Added a test suite and localization documentation.
+
+Trademarks
+----------
+
+"PDOK" is a trademark of its owner. This fork is not affiliated with,
+endorsed by, or produced by PDOK. Trademark rights are separate from the
+copyright license that covers this software.
