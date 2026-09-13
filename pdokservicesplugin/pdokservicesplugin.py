@@ -84,6 +84,7 @@ from .lib.http_client import PdokServicesNetworkException
 from .locator_filter.pdoklocatieserverfilter import PDOKLocatieserverLocatorFilter
 
 from .lib.constants import PLUGIN_NAME, PLUGIN_ID, DEFAULT_NR_FAVS, SETTINGS_SECTIONS
+from .localization import PluginTranslator
 from .lib.locatieserver import (
     suggest_query,
     TypeFilter,
@@ -105,6 +106,10 @@ class PdokServicesPlugin(object):
         # Save reference to the QGIS interface
         self.iface = iface
         self.plugin_dir = os.path.dirname(__file__)
+        # Must run before the dialog is built: its strings are translated
+        # during setupUi.
+        self.translator = PluginTranslator(self.plugin_dir)
+        self.translator.apply()
         self.dlg = PdokServicesPluginDialog(parent=self.iface.mainWindow())
 
         self.filter = PDOKLocatieserverLocatorFilter(self.iface)
@@ -329,6 +334,7 @@ class PdokServicesPlugin(object):
         except Exception as e:
             log.debug(f"Probable ignorable issue during unload of plugin: {e}")
         QgsApplication.processingRegistry().removeProvider(self.provider)
+        self.translator.unload()
 
     def get_dd(self, val, val_string=""):
         md_item_empty = "<dd><em>Niet ingevuld</em></dd>"
