@@ -2,13 +2,23 @@
 name=PDOK services plugin
 qgisMinimumVersion=3.14
 qgisMaximumVersion=4.99
-description=Plugin to easily load the available Dutch PDOK (Publieke Dienstverlening Op de Kaart) services. Currently only in Dutch.
+description=Plugin to easily load the available Dutch PDOK (Publieke Dienstverlening Op de Kaart) services. Available in Dutch and English.
 about=Nederlands:
 
         - Plugin om eenvoudiger PDOK services (WMS, WMTS, WFS, WCS en OGC:API tiles/features) te laden in QGIS.
         - Handig? Doneer een koffie of borrel via https://liberapay.com/rduivenvoorde/
         - Een paar opmerkingen: alle dataset en de url's zijn te vinden op https://www.pdok.nl/datasets
         - LET OP: van sommige (vooral grote) dataset worden/zijn de WFS services uitgefaseerd, en dan vervangen door een ATOM-feed. In de feed zit dan een download-url voor de gehele dataset. Die feed moet u zelf van https://www.pdok.nl/datasets ophalen.
+        - De plugin volgt de taal van QGIS. In het tabblad Instellingen kunt u de taal ook handmatig kiezen.
+
+        English:
+
+        - Plugin to load PDOK services (WMS, WMTS, WFS, WCS and OGC:API tiles/features) into QGIS more easily.
+        - Useful? Buy a coffee or a drink via https://liberapay.com/rduivenvoorde/
+        - All datasets and their urls can be found at https://www.pdok.nl/datasets
+        - NOTE: for some (mostly large) datasets the WFS services are being phased out and replaced by an ATOM feed, which contains a download url for the whole dataset. You have to fetch that feed from https://www.pdok.nl/datasets yourself.
+        - The plugin follows the QGIS language. You can also pick the language by hand in the Settings tab.
+        - Official Dutch PDOK layer names stay visible next to their English translation, so a layer can always be traced back to its source.
 
 version=5.2.3
 
