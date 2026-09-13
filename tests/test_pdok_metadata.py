@@ -13,6 +13,7 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PLUGIN_DIR = os.path.join(REPO_ROOT, "pdokservicesplugin")
 CATALOGUE = os.path.join(PLUGIN_DIR, "resources", "layers-pdok.json")
 RESOURCE = meta.resource_path("en", PLUGIN_DIR)
+DESCRIPTION_RESOURCE = meta.descriptions_path("en", PLUGIN_DIR)
 
 
 def translations():
@@ -30,6 +31,14 @@ class ResourceTest(unittest.TestCase):
             "layer_title_suffixes",
             "service_titles",
         ):
+            self.assertIn(section, data)
+            self.assertIsInstance(data[section], dict)
+
+    def test_description_resource_is_shipped_and_valid(self):
+        self.assertTrue(os.path.exists(DESCRIPTION_RESOURCE))
+        with open(DESCRIPTION_RESOURCE, encoding="utf-8") as handle:
+            data = json.load(handle)
+        for section in ("abstracts", "service_abstracts"):
             self.assertIn(section, data)
             self.assertIsInstance(data[section], dict)
 
@@ -89,6 +98,12 @@ class LookupTest(unittest.TestCase):
     def test_unknown_title_has_no_translation(self):
         for source in ("Volstrekt onbekende laag", "", None):
             self.assertIsNone(self.tr.title(source), source)
+
+    def test_description_lookup(self):
+        self.assertEqual(
+            self.tr.abstract("Zwemwaterkwaliteit (Provinciaal en Rijkswateren)"),
+            "Bathing-water quality (provincial and national waters).",
+        )
 
     def test_service_titles(self):
         self.assertEqual(
@@ -247,6 +262,16 @@ class CoverageTest(unittest.TestCase):
         )
         share = translated / len(catalogue)
         self.assertGreater(share, 0.95, f"only {share:.1%} of rows translated")
+
+    def test_all_catalogue_descriptions_are_translated(self):
+        tr = translations()
+        with open(CATALOGUE, encoding="utf-8") as handle:
+            catalogue = json.load(handle)
+        for entry in catalogue:
+            if entry.get("abstract"):
+                self.assertIsNotNone(tr.abstract(entry["abstract"]))
+            if entry.get("service_abstract"):
+                self.assertIsNotNone(tr.service_abstract(entry["service_abstract"]))
 
     def test_untranslated_rows_still_produce_a_usable_label(self):
         tr = translations()

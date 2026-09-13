@@ -13,13 +13,10 @@
  *                                                                         *
  ***************************************************************************/
 
-English names for the services and layers PDOK publishes.
+English metadata for the services and layers PDOK publishes.
 
-PDOK serves Dutch only: asking its APIs for another language is either ignored
-or rejected, so these names come from a curated resource file instead of from
-the network. Resolution order is official PDOK English, then curated, then the
-Dutch original; a missing translation is normal and simply leaves the Dutch
-name standing on its own.
+PDOK serves Dutch only, so English titles and descriptions come from curated
+resources. Resolution order is official PDOK English, then curated, then Dutch.
 
 The resource is kept apart from resources/layers-pdok.json because that file is
 regenerated wholesale by the ngr-services-spider script.
@@ -38,6 +35,8 @@ TRANSLATIONS_DIRNAME = os.path.join("resources", "translations")
 #: Field a catalogue entry would carry if PDOK ever published English titles.
 OFFICIAL_TITLE_FIELDS = ("title_en",)
 OFFICIAL_SERVICE_TITLE_FIELDS = ("service_title_en",)
+OFFICIAL_ABSTRACT_FIELDS = ("abstract_en",)
+OFFICIAL_SERVICE_ABSTRACT_FIELDS = ("service_abstract_en",)
 
 _TRAILING_CODE = re.compile(r"\s*\(([^()]*)\)\s*$")
 _cache = {}
@@ -49,20 +48,38 @@ def normalize(text):
 
 
 class PdokMetadataTranslations:
-    """Curated English names, looked up by normalized Dutch title."""
+    """Curated English PDOK titles and descriptions."""
 
-    def __init__(self, titles=None, bases=None, suffixes=None, service_titles=None):
+    def __init__(
+        self,
+        titles=None,
+        bases=None,
+        suffixes=None,
+        service_titles=None,
+        abstracts=None,
+        service_abstracts=None,
+    ):
         self.titles = {normalize(k): v for k, v in (titles or {}).items()}
         self.bases = {normalize(k): v for k, v in (bases or {}).items()}
         self.suffixes = {normalize(k): v for k, v in (suffixes or {}).items()}
         self.service_titles = {
             normalize(k): v for k, v in (service_titles or {}).items()
         }
+        self.abstracts = {normalize(k): v for k, v in (abstracts or {}).items()}
+        self.service_abstracts = {
+            normalize(k): v for k, v in (service_abstracts or {}).items()
+        }
         # Longest first so that 'labelpoint' wins over 'label'.
         self._suffix_order = sorted(self.suffixes, key=len, reverse=True)
 
     def __bool__(self):
-        return bool(self.titles or self.bases or self.service_titles)
+        return bool(
+            self.titles
+            or self.bases
+            or self.service_titles
+            or self.abstracts
+            or self.service_abstracts
+        )
 
     def title(self, source_title):
         """English name for a layer title, or None to keep the Dutch original."""
@@ -87,6 +104,18 @@ class PdokMetadataTranslations:
         if not source_title:
             return None
         return self.service_titles.get(normalize(source_title))
+
+    def abstract(self, source_abstract):
+        """English layer description, or None to keep the Dutch original."""
+        if not source_abstract:
+            return None
+        return self.abstracts.get(normalize(source_abstract))
+
+    def service_abstract(self, source_abstract):
+        """English service description, or None."""
+        if not source_abstract:
+            return None
+        return self.service_abstracts.get(normalize(source_abstract))
 
     def _lookup(self, text):
         key = normalize(text)
@@ -125,24 +154,38 @@ def resource_path(language, plugin_dir):
     )
 
 
-def load_translations(language, plugin_dir):
-    """Read the curated resource. A missing or broken file yields no
-    translations rather than an error, so the plugin keeps working in Dutch."""
-    path = resource_path(language, plugin_dir)
+def descriptions_path(language, plugin_dir):
+    """Path of the curated description translations."""
+    return os.path.join(
+        plugin_dir, TRANSLATIONS_DIRNAME, f"pdok_descriptions_{language}.json"
+    )
+
+
+def _read_json(path):
     if not os.path.exists(path):
-        return EMPTY
+        return {}
     try:
         with open(path, "r", encoding="utf-8") as handle:
-            data = json.load(handle)
-        return PdokMetadataTranslations(
-            titles=data.get("layer_titles"),
-            bases=data.get("layer_title_bases"),
-            suffixes=data.get("layer_title_suffixes"),
-            service_titles=data.get("service_titles"),
-        )
+            return json.load(handle)
     except Exception as e:
-        log.warning(f"ignoring unusable PDOK metadata translations '{path}': {e}")
+        log.warning(f"ignoring unusable PDOK translations '{path}': {e}")
+        return {}
+
+
+def load_translations(language, plugin_dir):
+    """Read curated resources, falling back safely when they are unavailable."""
+    data = _read_json(resource_path(language, plugin_dir))
+    descriptions = _read_json(descriptions_path(language, plugin_dir))
+    if not data and not descriptions:
         return EMPTY
+    return PdokMetadataTranslations(
+        titles=data.get("layer_titles"),
+        bases=data.get("layer_title_bases"),
+        suffixes=data.get("layer_title_suffixes"),
+        service_titles=data.get("service_titles"),
+        abstracts=descriptions.get("abstracts"),
+        service_abstracts=descriptions.get("service_abstracts"),
+    )
 
 
 def translations_for(language, plugin_dir):
@@ -180,3 +223,17 @@ def translated_service_title(layer, translations):
     if official:
         return official
     return translations.service_title(layer.get("service_title", ""))
+
+
+def translated_abstract(layer, translations):
+    official = _official(layer, OFFICIAL_ABSTRACT_FIELDS)
+    if official:
+        return official
+    return translations.abstract(layer.get("abstract", ""))
+
+
+def translated_service_abstract(layer, translations):
+    official = _official(layer, OFFICIAL_SERVICE_ABSTRACT_FIELDS)
+    if official:
+        return official
+    return translations.service_abstract(layer.get("service_abstract", ""))

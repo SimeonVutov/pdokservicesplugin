@@ -465,8 +465,15 @@ class PdokServicesPlugin(object):
         url = self.current_layer["service_url"]
         label = self.layer_label(self.current_layer)
         title = label.display_title
-        abstract_dd = self.get_dd(self.current_layer["abstract"])
-        service_abstract_dd = self.get_dd(self.current_layer["service_abstract"])
+        translations = self.metadata_translations()
+        abstract_dd = self.get_dd(
+            self.current_layer["abstract"],
+            pdok_metadata.translated_abstract(self.current_layer, translations),
+        )
+        service_abstract_dd = self.get_dd(
+            self.current_layer["service_abstract"],
+            pdok_metadata.translated_service_abstract(self.current_layer, translations),
+        )
 
         service_title = (
             label.display_service_title
@@ -1104,8 +1111,22 @@ class PdokServicesPlugin(object):
         # carries the translation, the Dutch original and the identifier, so a
         # layer stays findable by any of its names.
         search_terms = " ".join(label.search_terms)
+        translations = self.metadata_translations()
+        abstracts = " ".join(
+            filter(
+                None,
+                (
+                    serviceLayer.get("abstract"),
+                    serviceLayer.get("service_abstract"),
+                    pdok_metadata.translated_abstract(serviceLayer, translations),
+                    pdok_metadata.translated_service_abstract(
+                        serviceLayer, translations
+                    ),
+                ),
+            )
+        )
         itemFilter.setText(
-            f'{serviceLayer["service_type"]} {search_terms} {serviceLayer["service_abstract"]} {styles_string}'
+            f'{serviceLayer["service_type"]} {search_terms} {abstracts} {styles_string}'
         )
 
     def add_source_row(self, serviceLayer):
