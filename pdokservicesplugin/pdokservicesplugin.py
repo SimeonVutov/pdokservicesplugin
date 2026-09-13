@@ -85,7 +85,15 @@ from .lib.http_client import PdokServicesNetworkException
 from .locator_filter.pdoklocatieserverfilter import PDOKLocatieserverLocatorFilter
 
 from .lib.constants import PLUGIN_NAME, PLUGIN_ID, DEFAULT_NR_FAVS, SETTINGS_SECTIONS
-from .localization import PluginTranslator, label_for_layer
+from .localization import (
+    AUTO,
+    SOURCE_LANGUAGE,
+    SUPPORTED_LANGUAGES,
+    PluginTranslator,
+    label_for_layer,
+    read_language_preference,
+    write_language_preference,
+)
 from .lib.locatieserver import (
     suggest_query,
     TypeFilter,
@@ -206,6 +214,11 @@ class PdokServicesPlugin(object):
             "api tiles": "OGC API - Tiles",
         }
 
+        # Added before the favourites so that rebuilding those leaves it in place.
+        self.language_menu = QMenu(self.tr("Taal"), self.run_button.menu())
+        self.run_button.menu().addMenu(self.language_menu)
+        self.populate_language_menu()
+
         self.add_fav_actions_to_toolbar_button()
 
         self.toolbar_search = QLineEdit()
@@ -256,6 +269,9 @@ class PdokServicesPlugin(object):
 
         self.dlg.pushButton.clicked.connect(self.toggle_all_fq_checkboxes)
 
+        self.setup_language_combo()
+        self.dlg.language_combo.currentIndexChanged.connect(self.on_language_changed)
+
         self.dlg.geocoder_search.returnPressed.connect(
             self.ls_dialog_get_suggestions_and_remove_pointer
         )
@@ -288,6 +304,9 @@ class PdokServicesPlugin(object):
         self.dlg.layer_info.setHidden(True)
         self.dlg.layer_options_groupbox.setHidden(True)
 
+        self.set_about_html()
+
+    def set_about_html(self):
         # we want to use html (plus ogg and pdok logo's) in the info webview of the dialog
         # so because we want it to be used in both Qt5 and Qt6, we cannot use resource files
         # so a way to handle this, is to use base64 encoded image strings in the img-html tags
@@ -992,40 +1011,50 @@ class PdokServicesPlugin(object):
         self.proxyModel.setFilterRegularExpression(regexp)
         self.proxyModel.insertRow
 
-    def add_source_row(self, serviceLayer):
-        # you can attache different "data's" to to an QStandarditem
-        # default one is the visible one:
+    def apply_source_row_texts(self, items, serviceLayer):
+        """Fill the four columns of one row from a catalogue entry."""
+        itemLayername, itemType, itemServicetitle, itemFilter = items
         stype = (
             self.service_type_mapping[serviceLayer["service_type"]]
             if serviceLayer["service_type"] in self.service_type_mapping
             else serviceLayer["service_type"].upper()
         )
         label = self.layer_label(serviceLayer)
-        itemType = QStandardItem(str(stype))
-        # userrole is a free form one:
-        # only attach the data to the first item
-        # service layer = a dict/object with all props of the layer
-        itemType.setData(serviceLayer, Qt.ItemDataRole.UserRole)
-        itemType.setToolTip(f"{stype} - {label.display_title}")
         # only wms services have styles (sometimes)
-        layername = label.display_title
         styles_string = ""
         if "styles" in serviceLayer:
             styles_string = " ".join(
                 [" ".join(x.values()) for x in serviceLayer["styles"]]
             )
 
-        itemLayername = QStandardItem(label.display_title)
+        itemType.setText(str(stype))
+        itemType.setToolTip(f"{stype} - {label.display_title}")
+        itemLayername.setText(label.display_title)
         itemLayername.setToolTip(f"{stype} - {label.display_service_title}")
-        # itemFilter is the item used to search filter in. That is why layername is a combi of layername + filter here
-        itemFilter = QStandardItem(
-            f'{serviceLayer["service_type"]} {layername} {label.display_service_title} {serviceLayer["service_abstract"]} {styles_string}'
-        )
-        itemServicetitle = QStandardItem(label.display_service_title)
+        itemServicetitle.setText(label.display_service_title)
         itemServicetitle.setToolTip(f"{stype} - {label.display_title}")
-        self.sourceModel.appendRow(
-            [itemLayername, itemType, itemServicetitle, itemFilter]
+        # itemFilter is the hidden column the search filter runs against.
+        itemFilter.setText(
+            f'{serviceLayer["service_type"]} {label.display_title} {label.display_service_title} {serviceLayer["service_abstract"]} {styles_string}'
         )
+
+    def add_source_row(self, serviceLayer):
+        items = [QStandardItem() for _ in range(4)]
+        # userrole is a free form one: the whole catalogue entry is attached to
+        # the type column, which is where show_layer reads it back from.
+        items[1].setData(serviceLayer, Qt.ItemDataRole.UserRole)
+        self.apply_source_row_texts(items, serviceLayer)
+        self.sourceModel.appendRow(items)
+
+    def refresh_source_rows(self):
+        """Re-label every catalogue row without rebuilding the model."""
+        for row in range(self.sourceModel.rowCount()):
+            items = [self.sourceModel.item(row, column) for column in range(4)]
+            if any(item is None for item in items):
+                continue
+            serviceLayer = items[1].data(Qt.ItemDataRole.UserRole)
+            if serviceLayer:
+                self.apply_source_row_texts(items, serviceLayer)
 
     @staticmethod
     def valueToBool(value):
@@ -1108,12 +1137,7 @@ class PdokServicesPlugin(object):
             self.dlg.servicesView.hideColumn(3)
             self.services_loaded = True
 
-        self.sourceModel.setHeaderData(2, Qt.Orientation.Horizontal, self.tr("Service"))
-        self.sourceModel.setHeaderData(1, Qt.Orientation.Horizontal, self.tr("Type"))
-        self.sourceModel.setHeaderData(0, Qt.Orientation.Horizontal, self.tr("Laagnaam"))
-        self.sourceModel.horizontalHeaderItem(2).setTextAlignment(Qt.AlignmentFlag.AlignLeft)
-        self.sourceModel.horizontalHeaderItem(1).setTextAlignment(Qt.AlignmentFlag.AlignLeft)
-        self.sourceModel.horizontalHeaderItem(0).setTextAlignment(Qt.AlignmentFlag.AlignLeft)
+        self.set_service_headers()
         self.dlg.servicesView.setColumnWidth(
             0, 300
         )  # set name to 300px (there are some huge layernames)
@@ -1123,6 +1147,83 @@ class PdokServicesPlugin(object):
             self.dlg.show()
         QSettings().setValue(f"/{PLUGIN_ID}/currenttab", self.dlg.tabs.currentIndex())
         self.remove_pointer_or_layer()
+
+    def set_service_headers(self):
+        self.sourceModel.setHeaderData(2, Qt.Orientation.Horizontal, self.tr("Service"))
+        self.sourceModel.setHeaderData(1, Qt.Orientation.Horizontal, self.tr("Type"))
+        self.sourceModel.setHeaderData(0, Qt.Orientation.Horizontal, self.tr("Laagnaam"))
+        for column in (0, 1, 2):
+            self.sourceModel.horizontalHeaderItem(column).setTextAlignment(
+                Qt.AlignmentFlag.AlignLeft
+            )
+
+    def language_choices(self):
+        # Language names are conventionally shown in their own language, so
+        # only the automatic entry is translated.
+        names = {SOURCE_LANGUAGE: "Nederlands", "en": "English"}
+        choices = [(AUTO, self.tr("Automatisch (volg QGIS)"))]
+        for code in (SOURCE_LANGUAGE,) + tuple(SUPPORTED_LANGUAGES):
+            choices.append((code, names.get(code, code)))
+        return choices
+
+    def setup_language_combo(self):
+        combo = self.dlg.language_combo
+        combo.blockSignals(True)
+        combo.clear()
+        for code, title in self.language_choices():
+            combo.addItem(title, code)
+        index = combo.findData(read_language_preference())
+        combo.setCurrentIndex(index if index != -1 else 0)
+        combo.blockSignals(False)
+
+    def populate_language_menu(self):
+        self.language_menu.setTitle(self.tr("Taal"))
+        self.language_menu.clear()
+        current = read_language_preference()
+        for code, title in self.language_choices():
+            action = QAction(title, self.language_menu)
+            action.setCheckable(True)
+            action.setChecked(code == current)
+            # Double lambda to freeze the language code per action.
+            action.triggered.connect(
+                (lambda c: lambda: self.set_language_preference(c))(code)
+            )
+            self.language_menu.addAction(action)
+
+    def on_language_changed(self, index):
+        preference = self.dlg.language_combo.itemData(index)
+        if preference is not None:
+            self.set_language_preference(preference)
+
+    def set_language_preference(self, preference):
+        write_language_preference(preference)
+        if self.translator.apply(preference):
+            self.retranslate_ui()
+
+    def retranslate_ui(self):
+        """Re-apply every string the plugin owns after a language change."""
+        self.dlg.retranslateUi(self.dlg)
+        self.about_action.setText(self.tr("About"))
+        self.clean_ls_search_action.setText(self.tr("Cleanup"))
+        self.toolbar_search.setPlaceholderText(self.tr("Zoek in PDOK Locatieserver"))
+        self.dlg.geocoder_search.setPlaceholderText(
+            self.tr("Zoek in PDOK Locatieserver, bv postcode of postcode huisnummer")
+        )
+        self.dlg.geocoderResultSearch.setPlaceholderText(
+            self.tr("een of meer zoekwoorden uit resultaat")
+        )
+        self.set_about_html()
+        self.setup_language_combo()
+        self.populate_language_menu()
+        if self.services_loaded:
+            self.set_service_headers()
+            self.refresh_source_rows()
+        self.add_fav_actions_to_toolbar_button()
+        if self.current_layer is not None:
+            self.update_layer_panel()
+        # Algorithm names and group labels are only read when the registry is
+        # refreshed.
+        QgsApplication.processingRegistry().refreshAlgorithms()
 
     def setup_fq_checkboxes(self):
         """
