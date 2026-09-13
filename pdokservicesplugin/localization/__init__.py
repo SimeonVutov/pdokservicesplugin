@@ -17,6 +17,7 @@ Two separate concerns: `locale` translates plugin-owned interface text through
 Qt, `labels` presents the names PDOK publishes for its own services and layers
 without losing the authoritative Dutch original.
 """
+from . import pdok_metadata
 from .labels import BILINGUAL_SEPARATOR, LayerLabel, bilingual, label_for_layer
 from .locale import (
     AUTO,
@@ -49,6 +50,7 @@ __all__ = [
     "is_source_language",
     "label_for_layer",
     "language_from_locale",
+    "pdok_metadata",
     "qgis_locale_name",
     "read_language_preference",
     "resolve_language",
