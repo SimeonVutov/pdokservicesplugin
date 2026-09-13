@@ -1221,9 +1221,8 @@ class PdokServicesPlugin(object):
         self.add_fav_actions_to_toolbar_button()
         if self.current_layer is not None:
             self.update_layer_panel()
-        # Algorithm names and group labels are only read when the registry is
-        # refreshed.
-        QgsApplication.processingRegistry().refreshAlgorithms()
+        # Algorithm names and group labels are only re-read on a refresh.
+        self.provider.refreshAlgorithms()
 
     def setup_fq_checkboxes(self):
         """
