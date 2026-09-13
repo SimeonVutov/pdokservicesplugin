@@ -69,14 +69,17 @@ class PdokMetadataTranslations:
         if not source_title:
             return None
         text = str(source_title).strip()
-        # An official abbreviation such as '(BTD)' is part of the name and is
-        # carried across untranslated.
-        code = ""
+        # Full matches can translate parenthetical terminology.
+        full = self._lookup(text)
+        if full is not None:
+            return full
+        # Otherwise preserve trailing official abbreviations.
         match = _TRAILING_CODE.search(text)
-        if match:
-            code = f" ({match.group(1)})"
-            text = text[: match.start()].strip()
-        translated = self._lookup(text)
+        if not match:
+            return None
+        code = f" ({match.group(1)})"
+        base_text = text[: match.start()].strip()
+        translated = self._lookup(base_text)
         return None if translated is None else f"{translated}{code}"
 
     def service_title(self, source_title):

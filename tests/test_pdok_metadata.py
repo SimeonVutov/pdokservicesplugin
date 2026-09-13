@@ -87,7 +87,7 @@ class LookupTest(unittest.TestCase):
         self.assertEqual(self.tr.title("Plaatslabel"), "Place label")
 
     def test_unknown_title_has_no_translation(self):
-        for source in ("Volstrekt onbekende laag", "TOP25raster", "", None):
+        for source in ("Volstrekt onbekende laag", "", None):
             self.assertIsNone(self.tr.title(source), source)
 
     def test_service_titles(self):
@@ -95,9 +95,10 @@ class LookupTest(unittest.TestCase):
             self.tr.service_title("CBS Wijken en Buurten"),
             "CBS Districts and Neighbourhoods",
         )
-        # Acronyms and product names are left alone.
-        self.assertIsNone(self.tr.service_title("BRT TOP10NL"))
-        self.assertIsNone(self.tr.service_title("BAG WMS"))
+        # Acronyms and product names map to themselves: the same string in
+        # both languages, so bilingual() shows it once with no clutter.
+        self.assertEqual(self.tr.service_title("BRT TOP10NL"), "BRT TOP10NL")
+        self.assertEqual(self.tr.service_title("BAG WMS"), "BAG WMS")
 
 
 class ResolutionOrderTest(unittest.TestCase):
@@ -245,7 +246,7 @@ class CoverageTest(unittest.TestCase):
             if isinstance(entry.get("title"), str) and tr.title(entry["title"])
         )
         share = translated / len(catalogue)
-        self.assertGreater(share, 0.5, f"only {share:.1%} of rows translated")
+        self.assertGreater(share, 0.95, f"only {share:.1%} of rows translated")
 
     def test_untranslated_rows_still_produce_a_usable_label(self):
         tr = translations()
