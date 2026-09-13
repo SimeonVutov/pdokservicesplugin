@@ -118,16 +118,24 @@ def main():
     plugin.delete_fav_layer_in_settings(entry)
 
     plugin.unload()
-    app.exitQgis()
+    QgsProject.instance().removeAllMapLayers()
+    app.processEvents()
 
     if failures:
         print("\nFAILURES:")
         for failure in failures:
             print(f"  {failure}")
-        return 1
-    print("\nall startup checks passed")
-    return 0
+        result = 1
+    else:
+        print("\nall startup checks passed")
+        result = 0
+
+    app.exitQgis()
+    return result
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    result = main()
+    sys.stdout.flush()
+    sys.stderr.flush()
+    os._exit(result)
