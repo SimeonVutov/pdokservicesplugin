@@ -96,6 +96,7 @@ from .localization import (
     read_language_preference,
     write_language_preference,
 )
+from .localization.labels import bilingual
 from .lib.locatieserver import (
     suggest_query,
     TypeFilter,
@@ -461,6 +462,20 @@ class PdokServicesPlugin(object):
             ),
         )
 
+    def style_display_title(self, style, translations=None):
+        source = pdok_metadata.style_source_title(style)
+        if translations is None:
+            translations = self.metadata_translations()
+        translated = pdok_metadata.translated_style_title(style, translations)
+        return bilingual(translated, source)
+
+    def selected_style(self):
+        if not self.current_layer:
+            return None
+        if self.current_layer.get("selectedStyle") is not None:
+            return self.current_layer["selectedStyle"]
+        return self.get_selected_style()
+
     def update_layer_panel(self):
         url = self.current_layer["service_url"]
         label = self.layer_label(self.current_layer)
@@ -630,11 +645,17 @@ class PdokServicesPlugin(object):
             self.dlg.wmsStyleLabel.setText(
                 self.tr("Style (%n stijl(en) beschikbaar)", None, nr_styles)
             )
-            style_title_names = [
-                x["title"] if "title" in x else x["name"] for x in styles
-            ]
-            self.dlg.wmsStyleComboBox.addItems(style_title_names)
+            for style in styles:
+                self.dlg.wmsStyleComboBox.addItem(
+                    self.style_display_title(style, translations), style
+                )
             self.dlg.wmsStyleComboBox.setCurrentIndex(0)
+            preferred_style = self.current_layer.get("selectedStyle")
+            if preferred_style is not None:
+                for index, style in enumerate(styles):
+                    if style.get("name") == preferred_style.get("name"):
+                        self.dlg.wmsStyleComboBox.setCurrentIndex(index)
+                        break
             self.dlg.wmsStyleComboBox.setEnabled(
                 nr_styles > 1  # enable if more than one style
             )
@@ -729,29 +750,14 @@ class PdokServicesPlugin(object):
         return url
 
     def get_selected_style(self):
-        selected_style_title = self.dlg.wmsStyleComboBox.currentText()
-        selected_style = None
-        if "styles" in self.current_layer:
-            selected_style = next(
-                (
-                    x
-                    for x in self.current_layer["styles"]
-                    if "title" in x and x["title"] == selected_style_title
-                ),
-                None,
-            )
-            if selected_style is None:
-                # check if selected_style_title is one of the style names, in case the style in the cap doc does not have a title
-                # style should have at least a name
-                selected_style = next(
-                    (
-                        x
-                        for x in self.current_layer["styles"]
-                        if x["name"] == selected_style_title
-                    ),
-                    None,
-                )
-        return selected_style
+        if not self.current_layer or "styles" not in self.current_layer:
+            return None
+        selected = self.dlg.wmsStyleComboBox.currentData(Qt.ItemDataRole.UserRole)
+        if isinstance(selected, dict):
+            return selected
+        index = self.dlg.wmsStyleComboBox.currentIndex()
+        styles = self.current_layer["styles"]
+        return styles[index] if 0 <= index < len(styles) else None
 
     def get_crs_comboselect(self):
         if self.dlg.comboSelectProj.currentIndex() == -1:
@@ -794,16 +800,10 @@ class PdokServicesPlugin(object):
         crs = self.get_crs_comboselect()
 
         selected_style_name = ""
-        if "selectedStyle" in self.current_layer:
-            selected_style = self.current_layer["selectedStyle"]
-        else:
-            selected_style = self.get_selected_style()
+        selected_style = self.selected_style()
         if selected_style is not None:
             selected_style_name = selected_style["name"]
-            selected_style_title = selected_style["name"]
-            if "title" in selected_style:
-                selected_style_title = selected_style["title"]
-            title += f" [{selected_style_title}]"
+            title += f" [{self.style_display_title(selected_style)}]"
 
         uri = f"crs={crs}&layers={layername}&styles={selected_style_name}&format={imgformat}&url={url}"
         return QgsRasterLayer(uri, title, "wms")
@@ -871,12 +871,12 @@ class PdokServicesPlugin(object):
         ][0]
 
         # Style toevoegen in laag vanuit ui
-        selected_style = self.get_selected_style()
+        selected_style = self.selected_style()
         selected_style_url = ""
 
         if selected_style is not None:
             selected_style_url = selected_style["url"]
-            title += f" [{selected_style['name']}]"
+            title += f" [{self.style_display_title(selected_style)}]"
 
         url_template = self.build_tileset_url(url, used_tileset["tileset_id"], True)
         maxz_coord = used_tileset["tileset_max_zoomlevel"]
@@ -915,6 +915,11 @@ class PdokServicesPlugin(object):
             f"{PLUGIN_ID}/service_md_id", catalogue_entry.get("service_md_id", "")
         )
         qgis_layer.setCustomProperty(f"{PLUGIN_ID}/display_title", label.display_title)
+        style = self.selected_style()
+        source_style = pdok_metadata.style_source_title(style) if style else ""
+        display_style = self.style_display_title(style) if style else ""
+        qgis_layer.setCustomProperty(f"{PLUGIN_ID}/style_title", source_style)
+        qgis_layer.setCustomProperty(f"{PLUGIN_ID}/display_style_title", display_style)
 
     def find_catalogue_entry(self, identifier, service_md_id):
         for entry in getattr(self, "layers_pdok", []):
@@ -927,6 +932,7 @@ class PdokServicesPlugin(object):
 
     def relabel_pdok_layers(self):
         """Rename layers this plugin added so they follow the active language."""
+        translations = self.metadata_translations()
         for qgis_layer in QgsProject.instance().mapLayers().values():
             identifier = qgis_layer.customProperty(f"{PLUGIN_ID}/identifier")
             if not identifier:
@@ -937,13 +943,43 @@ class PdokServicesPlugin(object):
             if entry is None:
                 continue
             previous = qgis_layer.customProperty(f"{PLUGIN_ID}/display_title") or ""
+            previous_style = (
+                qgis_layer.customProperty(f"{PLUGIN_ID}/display_style_title") or ""
+            )
+            source_style = qgis_layer.customProperty(f"{PLUGIN_ID}/style_title") or ""
             name = qgis_layer.name()
-            # Anything else means the user renamed it themselves; leave it be.
-            if not previous or not name.startswith(previous):
+
+            # Layers tagged before style localization only stored the base title.
+            if not source_style and previous and name.startswith(previous + " ["):
+                suffix = name[len(previous) + 2 :]
+                closing = suffix.find("]")
+                candidate = suffix[:closing] if closing >= 0 else ""
+                for style in entry.get("styles", []):
+                    if pdok_metadata.style_source_title(style) == candidate:
+                        source_style = candidate
+                        previous_style = candidate
+                        break
+
+            previous_generated = previous
+            if previous_style:
+                previous_generated += f" [{previous_style}]"
+            if not previous_generated or not name.startswith(previous_generated):
                 continue
+
             new_title = self.layer_label(entry).display_title
-            qgis_layer.setName(f"{new_title}{name[len(previous):]}")
+            new_style = ""
+            if source_style:
+                new_style = bilingual(
+                    translations.style_title(source_style), source_style
+                )
+            new_generated = new_title + (f" [{new_style}]" if new_style else "")
+            qgis_layer.setName(f"{new_generated}{name[len(previous_generated):]}")
             qgis_layer.setCustomProperty(f"{PLUGIN_ID}/display_title", new_title)
+            qgis_layer.setCustomProperty(
+                f"{PLUGIN_ID}/display_style_title", new_style
+            )
+            if source_style:
+                qgis_layer.setCustomProperty(f"{PLUGIN_ID}/style_title", source_style)
 
     def add_layer(self, new_layer, tree_location="default"):
         """Adds a QgsLayer to the project and layer tree.
@@ -1094,12 +1130,18 @@ class PdokServicesPlugin(object):
             else serviceLayer["service_type"].upper()
         )
         label = self.layer_label(serviceLayer)
-        # only wms services have styles (sometimes)
-        styles_string = ""
-        if "styles" in serviceLayer:
-            styles_string = " ".join(
-                [" ".join(x.values()) for x in serviceLayer["styles"]]
+        translations = self.metadata_translations()
+        style_terms = []
+        for style in serviceLayer.get("styles", []):
+            style_terms.extend(
+                str(value) for value in style.values() if isinstance(value, str)
             )
+            translated_style = pdok_metadata.translated_style_title(
+                style, translations
+            )
+            if translated_style:
+                style_terms.append(translated_style)
+        styles_string = " ".join(dict.fromkeys(style_terms))
 
         itemType.setText(str(stype))
         itemType.setToolTip(f"{stype} - {label.display_title}")
@@ -1111,7 +1153,6 @@ class PdokServicesPlugin(object):
         # carries the translation, the Dutch original and the identifier, so a
         # layer stays findable by any of its names.
         search_terms = " ".join(label.search_terms)
-        translations = self.metadata_translations()
         abstracts = " ".join(
             filter(
                 None,
@@ -1821,17 +1862,15 @@ class PdokServicesPlugin(object):
                     )  # Double lambda is required in order to freeze argument, otherwise always last favourite is added
                     # see https://stackoverflow.com/a/10452866/1763690
 
-                    fav_action.setToolTip(fav_layer["title"].capitalize())
-                    title = fav_layer["title"].capitalize()
+                    title = self.layer_label(fav_layer).display_title
                     if "selectedStyle" in fav_layer:
-                        style = fav_layer["selectedStyle"]
-                        if "name" in style:
-                            style_title = style["name"]
-                        if "title" in style:
-                            style_title = style["title"]
+                        style_title = self.style_display_title(
+                            fav_layer["selectedStyle"]
+                        )
                         if style_title:
                             title = f"{title} [{style_title}]"
 
+                    fav_action.setToolTip(title)
                     if "service_type" in fav_layer:
                         stype = fav_layer["service_type"].upper()
                         title += f" ({stype})"

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Curated English names for PDOK services and layers."""
+"""Curated English metadata for PDOK services, layers and styles."""
 import copy
 import json
 import os
@@ -30,6 +30,7 @@ class ResourceTest(unittest.TestCase):
             "layer_title_bases",
             "layer_title_suffixes",
             "service_titles",
+            "style_titles",
         ):
             self.assertIn(section, data)
             self.assertIsInstance(data[section], dict)
@@ -105,6 +106,15 @@ class LookupTest(unittest.TestCase):
             "Bathing-water quality (provincial and national waters).",
         )
 
+    def test_style_title_lookup(self):
+        self.assertEqual(
+            self.tr.style_title("Aantal inwoners"), "Number of inhabitants"
+        )
+        self.assertEqual(
+            self.tr.style_title("Standaardvisualisatie"), "Standard visualisation"
+        )
+        self.assertEqual(self.tr.style_title("Aalscholver"), "Cormorant")
+
     def test_service_titles(self):
         self.assertEqual(
             self.tr.service_title("CBS Wijken en Buurten"),
@@ -137,6 +147,18 @@ class ResolutionOrderTest(unittest.TestCase):
         self.assertIsNone(meta.translated_title(entry, self.tr))
         label = label_for_layer(entry)
         self.assertEqual(label.display_title, "Volstrekt onbekende laag")
+
+    def test_style_translation_uses_display_title_only(self):
+        style = {"title": "Standaardvisualisatie", "name": "standaard"}
+        self.assertEqual(meta.style_source_title(style), "Standaardvisualisatie")
+        self.assertEqual(
+            meta.translated_style_title(style, self.tr), "Standard visualisation"
+        )
+        official = dict(style, title_en="Standard cartographic style")
+        self.assertEqual(
+            meta.translated_style_title(official, self.tr),
+            "Standard cartographic style",
+        )
 
 
 class ResourceFailureTest(unittest.TestCase):
@@ -213,6 +235,14 @@ class IdentifierSafetyTest(unittest.TestCase):
         self.assertEqual(favourite["name"], label.identifier)
         self.assertEqual(favourite["service_md_id"], self.entry["service_md_id"])
 
+    def test_style_translation_does_not_modify_request_identifier(self):
+        style = {"title": "Standaardvisualisatie", "name": "standaard"}
+        before = copy.deepcopy(style)
+        translated = meta.translated_style_title(style, self.tr)
+        self.assertEqual(translated, "Standard visualisation")
+        self.assertEqual(style, before)
+        self.assertEqual(style["name"], "standaard")
+
 
 class BilingualSearchTest(unittest.TestCase):
     def setUp(self):
@@ -272,6 +302,20 @@ class CoverageTest(unittest.TestCase):
                 self.assertIsNotNone(tr.abstract(entry["abstract"]))
             if entry.get("service_abstract"):
                 self.assertIsNotNone(tr.service_abstract(entry["service_abstract"]))
+
+    def test_all_catalogue_style_labels_are_translated(self):
+        tr = translations()
+        with open(CATALOGUE, encoding="utf-8") as handle:
+            catalogue = json.load(handle)
+        seen = set()
+        for entry in catalogue:
+            for style in entry.get("styles", []):
+                source = meta.style_source_title(style)
+                if not source:
+                    continue
+                seen.add(source)
+                self.assertIsNotNone(tr.style_title(source), source)
+        self.assertGreater(len(seen), 2000)
 
     def test_untranslated_rows_still_produce_a_usable_label(self):
         tr = translations()

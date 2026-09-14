@@ -35,6 +35,7 @@ TRANSLATIONS_DIRNAME = os.path.join("resources", "translations")
 #: Field a catalogue entry would carry if PDOK ever published English titles.
 OFFICIAL_TITLE_FIELDS = ("title_en",)
 OFFICIAL_SERVICE_TITLE_FIELDS = ("service_title_en",)
+OFFICIAL_STYLE_TITLE_FIELDS = ("title_en", "name_en")
 OFFICIAL_ABSTRACT_FIELDS = ("abstract_en",)
 OFFICIAL_SERVICE_ABSTRACT_FIELDS = ("service_abstract_en",)
 
@@ -56,6 +57,7 @@ class PdokMetadataTranslations:
         bases=None,
         suffixes=None,
         service_titles=None,
+        style_titles=None,
         abstracts=None,
         service_abstracts=None,
     ):
@@ -65,6 +67,7 @@ class PdokMetadataTranslations:
         self.service_titles = {
             normalize(k): v for k, v in (service_titles or {}).items()
         }
+        self.style_titles = {normalize(k): v for k, v in (style_titles or {}).items()}
         self.abstracts = {normalize(k): v for k, v in (abstracts or {}).items()}
         self.service_abstracts = {
             normalize(k): v for k, v in (service_abstracts or {}).items()
@@ -77,6 +80,7 @@ class PdokMetadataTranslations:
             self.titles
             or self.bases
             or self.service_titles
+            or self.style_titles
             or self.abstracts
             or self.service_abstracts
         )
@@ -104,6 +108,12 @@ class PdokMetadataTranslations:
         if not source_title:
             return None
         return self.service_titles.get(normalize(source_title))
+
+    def style_title(self, source_title):
+        """English style display title, or None."""
+        if not source_title:
+            return None
+        return self.style_titles.get(normalize(source_title))
 
     def abstract(self, source_abstract):
         """English layer description, or None to keep the Dutch original."""
@@ -183,6 +193,7 @@ def load_translations(language, plugin_dir):
         bases=data.get("layer_title_bases"),
         suffixes=data.get("layer_title_suffixes"),
         service_titles=data.get("service_titles"),
+        style_titles=data.get("style_titles"),
         abstracts=descriptions.get("abstracts"),
         service_abstracts=descriptions.get("service_abstracts"),
     )
@@ -223,6 +234,18 @@ def translated_service_title(layer, translations):
     if official:
         return official
     return translations.service_title(layer.get("service_title", ""))
+
+
+def style_source_title(style):
+    """User-visible style title without changing its request identifier."""
+    return str(style.get("title") or style.get("name") or "")
+
+
+def translated_style_title(style, translations):
+    official = _official(style, OFFICIAL_STYLE_TITLE_FIELDS)
+    if official:
+        return official
+    return translations.style_title(style_source_title(style))
 
 
 def translated_abstract(layer, translations):

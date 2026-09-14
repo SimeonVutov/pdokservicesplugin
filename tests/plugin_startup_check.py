@@ -49,6 +49,8 @@ class StubIface:
 
 IDENTIFIER = "waterdeel_vlak"
 SERVICE_TYPE = "api features"
+STYLE_IDENTIFIER = "Kadastralekaart"
+STYLE_SERVICE_TYPE = "wms"
 failures = []
 
 
@@ -58,11 +60,19 @@ def check(label, condition, detail=""):
     print(f"{'ok  ' if condition else 'FAIL'} {label} {detail}")
 
 
-def find_row(plugin, identifier):
+def find_row(plugin, identifier, service_type=SERVICE_TYPE):
     for row in range(plugin.sourceModel.rowCount()):
         entry = plugin.sourceModel.item(row, 1).data(Qt.ItemDataRole.UserRole)
-        if entry and entry.get("name") == identifier and entry.get("service_type") == SERVICE_TYPE:
-            return entry, plugin.sourceModel.item(row, 0).text(), plugin.sourceModel.item(row, 3).text()
+        if (
+            entry
+            and entry.get("name") == identifier
+            and entry.get("service_type") == service_type
+        ):
+            return (
+                entry,
+                plugin.sourceModel.item(row, 0).text(),
+                plugin.sourceModel.item(row, 3).text(),
+            )
     return None, None, None
 
 
@@ -104,11 +114,63 @@ def main():
     check("uri uses identifier", f"typename='{IDENTIFIER}'" in layer.source())
     check("uri has no display text", "Water area" not in layer.source() and "—" not in layer.source())
 
-    # --- switching relabels the added layer, repeatedly -------------------
+    # --- styles are translated only for display --------------------------
+    style_entry, _name, style_haystack = find_row(
+        plugin, STYLE_IDENTIFIER, STYLE_SERVICE_TYPE
+    )
+    check("style layer found", style_entry is not None)
+    check(
+        "english style searchable",
+        "standard visualisation" in style_haystack.lower(),
+    )
+    plugin.current_layer = style_entry
+    plugin.update_layer_panel()
+    selected_style = plugin.get_selected_style()
+    check(
+        "bilingual style name",
+        plugin.dlg.wmsStyleComboBox.currentText()
+        == "Standard visualisation — Standaardvisualisatie",
+        repr(plugin.dlg.wmsStyleComboBox.currentText()),
+    )
+    check("style request name intact", selected_style.get("name") == "standaard")
+    style_layer = plugin.create_new_layer()
+    plugin.tag_pdok_layer(style_layer, style_entry)
+    QgsProject.instance().addMapLayer(style_layer, False)
+    english_style_layer_name = (
+        "Cadastral map v5 — KadastraleKaartv5 "
+        "[Standard visualisation — Standaardvisualisatie]"
+    )
+    check(
+        "style layer named bilingually",
+        style_layer.name() == english_style_layer_name,
+        repr(style_layer.name()),
+    )
+    check("style uri uses request name", "styles=standaard" in style_layer.source())
+    check(
+        "style translation absent from uri",
+        "Standard visualisation" not in style_layer.source()
+        and "Standaardvisualisatie" not in style_layer.source(),
+    )
+
+    # --- switching relabels added layers and their styles -----------------
     for language, expected in (("nl", "Waterdeel vlak"), ("en", "Water area — Waterdeel vlak")) * 2:
         plugin.set_language_preference(language)
         check(f"relabel to {language}", layer.name() == expected, repr(layer.name()))
         check(f"uri intact after {language}", f"typename='{IDENTIFIER}'" in layer.source())
+        expected_style = (
+            "KadastraleKaartv5 [Standaardvisualisatie]"
+            if language == "nl"
+            else english_style_layer_name
+        )
+        check(
+            f"style relabel to {language}",
+            style_layer.name() == expected_style,
+            repr(style_layer.name()),
+        )
+        check(
+            f"style uri intact after {language}",
+            "styles=standaard" in style_layer.source(),
+        )
 
     # --- favourites still match on the identifier ------------------------
     plugin.save_fav_layer_in_settings(entry)
